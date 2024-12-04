@@ -6,7 +6,15 @@ require("dotenv").config();
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+
+const frontendURL= process.env.FRONTEND_URL;
+app.use(
+    cors({
+      origin: [frontendURL], 
+      methods: "GET, POST",
+      allowedHeaders: ["Content-Type"], 
+    })
+  );
 
 // Configure Multer for file uploads
 const upload = multer({
@@ -34,17 +42,36 @@ app.post("/upload-pdf", upload.single("pdf"), async (req, res) => {
       return res.status(400).json({ success: false, message: "No file uploaded" });
     }
 
-    // Parse the PDF
+   
     const pdfBuffer = req.file.buffer; // Get the file buffer from memory
     const data = await pdfParse(pdfBuffer); // Parse PDF content
+    
+    const extractedData = extractFields(data.text);
 
-    // Send back parsed text
-    res.status(200).json({ success: true, text: data.text });
+    // res.status(200).json({ success: true, text: data.text });
+    res.status(200).json({ success: true, extractedData });
   } catch (error) {
     console.error("Error parsing PDF:", error);
     res.status(500).json({ success: false, message: "Failed to parse PDF", error: error.message });
   }
 });
+
+function extractFields(text) {
+    // Log the raw text to adjust regex as needed
+    console.log("Raw Text:", text);
+    const nameMatch = text.match(/^([A-Za-z\s]+)$/m); 
+  const name = nameMatch ? nameMatch[1] : "Not found";
+
+  // Extract phone number (handles various phone formats)
+  const phoneMatch = text.match(/\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/); 
+  const phone = phoneMatch ? phoneMatch[0] : "Not found";
+
+  // Extract email (handles standard email format)
+  const emailMatch = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/); 
+  const email = emailMatch ? emailMatch[0] : "Not found";
+  
+    return { name, phone, email };
+  }
 
 // Start the server
 const PORT = process.env.PORT || 8080;
