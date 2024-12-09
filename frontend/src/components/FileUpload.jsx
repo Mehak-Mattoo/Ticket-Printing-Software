@@ -6,7 +6,7 @@ export default function FileUploadComponent() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
   const [result, setResult] = useState(null);
-
+  const backendUrl = import.meta.env.VITE_AUTH_BACKEND; // Get backend URL
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -31,8 +31,6 @@ export default function FileUploadComponent() {
     formData.append("pdf", file);
 
     try {
-      // Make sure the URL is correctly being formed
-      const backendUrl =  import.meta.env.VITE_AUTH_BACKEND; // Get backend URL
       const response = await axios.post(
         `${backendUrl}/upload-pdf`, // Ensure backend endpoint is correct
         formData,
@@ -46,14 +44,12 @@ export default function FileUploadComponent() {
       // Handle success response
       if (response.data.success) {
         setError(false);
-        console.log(response.data);
-        setResult(response.data.data); 
-        
+        setResult(response.data.data); // Assuming 'data' is the parsed content from PDF
         setMessage("File uploaded successfully!");
       }
     } catch (err) {
       setError(true);
-      setMessage("There was an error scheduling the email.");
+      setMessage("There was an error uploading the file.");
     }
   };
 
@@ -82,11 +78,23 @@ export default function FileUploadComponent() {
         </div>
       )}
 
-{result && (
+      {result && (
         <div>
-          <h2>Extracted Data</h2>
-          <p><strong>Name:</strong> {result.name}</p>
-          <p><strong>Phone Number:</strong> {result.phoneNumber}</p>
+          <h2>Parsed Data</h2>
+          {/* If result is an object, stringify it or access specific properties */}
+          <pre>{JSON.stringify(result, null, 2)}</pre> {/* Converts object to a readable string */}
+
+          {/* Alternatively, if you want to display specific fields */}
+          {result.success && (
+            <p>
+              <strong>Success:</strong> {result.success ? "Yes" : "No"}
+            </p>
+          )}
+          {result.text && (
+            <p>
+              <strong>Extracted Text:</strong> {result.text}
+            </p>
+          )}
         </div>
       )}
     </div>
