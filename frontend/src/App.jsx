@@ -16,7 +16,7 @@ function App() {
     <FileUpload/>
     
     <hr /> <hr /><hr />
-    <Translator/>
+    {/* <Translator/> */}
     <hr /> <hr /><hr />
     <Transliterate/>
   </>

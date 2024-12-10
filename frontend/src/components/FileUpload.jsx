@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Translator from "./Translator";
 
 export default function FileUploadComponent() {
   const [file, setFile] = useState(null);
@@ -44,8 +45,9 @@ export default function FileUploadComponent() {
       // Handle success response
       if (response.data.success) {
         setError(false);
-        setResult(response.data.data); // Assuming 'data' is the parsed content from PDF
+        setResult(response.data.text); // Assuming 'data' is the parsed content from PDF
         setMessage("File uploaded successfully!");
+        console.log(response.data)
       }
     } catch (err) {
       setError(true);
@@ -78,11 +80,12 @@ export default function FileUploadComponent() {
         </div>
       )}
 
+      {result && <Translator parsedText={result} />}
       {result && (
         <div>
           <h2>Parsed Data</h2>
           {/* If result is an object, stringify it or access specific properties */}
-          <pre>{JSON.stringify(result, null, 2)}</pre> {/* Converts object to a readable string */}
+          {/* <p>{JSON.stringify(result)}</p> Converts object to a readable string */}
 
           {/* Alternatively, if you want to display specific fields */}
           {result.success && (
