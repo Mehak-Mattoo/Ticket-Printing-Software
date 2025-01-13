@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Translator from "./Translator";
+
 
 export default function FileUploadComponent() {
   const [file, setFile] = useState(null);
@@ -32,22 +32,20 @@ export default function FileUploadComponent() {
     formData.append("pdf", file);
 
     try {
-      const response = await axios.post(
-        `${backendUrl}/upload-pdf`, // Ensure backend endpoint is correct
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.post(`${backendUrl}/upload-pdf`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       // Handle success response
       if (response.data.success) {
         setError(false);
-        setResult(response.data.text); // Assuming 'data' is the parsed content from PDF
+        setResult(response.data.extractedData.name); 
+        console.log(response.data.extractedData);
+        
         setMessage("File uploaded successfully!");
-        console.log(response.data)
+        console.log(response.data);
       }
     } catch (err) {
       setError(true);
@@ -80,7 +78,6 @@ export default function FileUploadComponent() {
         </div>
       )}
 
-      {result && <Translator parsedText={result} />}
       {result && (
         <div>
           <h2>Parsed Data</h2>
@@ -93,9 +90,9 @@ export default function FileUploadComponent() {
               <strong>Success:</strong> {result.success ? "Yes" : "No"}
             </p>
           )}
-          {result.text && (
+          {result && (
             <p>
-              <strong>Extracted Text:</strong> {result.text}
+              <strong>Extracted Text:</strong> {result}
             </p>
           )}
         </div>
