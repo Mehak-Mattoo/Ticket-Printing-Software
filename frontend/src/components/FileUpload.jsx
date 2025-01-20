@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-
 export default function FileUploadComponent() {
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
   const [result, setResult] = useState(null);
+  const [extractedData, setExtractedData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
+  const [extractError, setExtractError] = useState(null);
   const backendUrl = import.meta.env.VITE_AUTH_BACKEND; // Get backend URL
 
   const handleFileChange = (e) => {
@@ -41,9 +44,9 @@ export default function FileUploadComponent() {
       // Handle success response
       if (response.data.success) {
         setError(false);
-        setResult(response.data.extractedData.name); 
+        setResult(response.data.extractedData);
         console.log(response.data.extractedData);
-        
+
         setMessage("File uploaded successfully!");
         console.log(response.data);
       }
@@ -53,6 +56,25 @@ export default function FileUploadComponent() {
     }
   };
 
+  const getExtractedPdfContent = async () => {
+    setIsLoading(true);
+    setExtractError(null);
+
+    try {
+      const response = await axios.get(`${backendUrl}/extract-pdf-content`);
+
+      if (response.data.success) {
+        setExtractedData(response.data.extractedData);
+      } else {
+        setExtractError("Failed to extract content");
+      }
+    } catch (error) {
+      setExtractError("Error extracting content");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <div>
       <h2>Upload PDF</h2>
@@ -90,13 +112,26 @@ export default function FileUploadComponent() {
               <strong>Success:</strong> {result.success ? "Yes" : "No"}
             </p>
           )}
-          {result && (
-            <p>
-              <strong>Extracted Text:</strong> {result}
-            </p>
-          )}
+        
         </div>
       )}
+
+      {file && !isLoading && (
+        <div>
+          <button onClick={getExtractedPdfContent} disabled={isLoading}>
+            {isLoading ? "Extracting..." : "Extract PDF Content"}
+          </button>
+        </div>
+      )}
+
+      {extractedData && (
+        <div>
+          <h2>Extracted Content</h2>
+          <pre>{JSON.stringify(extractedData, null, 2)}</pre>
+        </div>
+      )}
+
+      {extractError && <p style={{ color: "red" }}>{extractError}</p>}
     </div>
   );
 }
