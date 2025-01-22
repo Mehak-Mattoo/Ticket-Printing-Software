@@ -95,10 +95,9 @@ app.get("/extract-pdf-content", async (req, res) => {
 });
 
 function OneWayExtractFields(text) {
-  // console.log("Raw Text:", text);
-
-  // Passenger's Name or Traveller
-  const nameMatch = text.match(/(?:Passenger’s Name|Traveller)\s+([A-Z\s]+)/);
+  const nameMatch = text.match(
+    /(?:Passenger’s Name|Traveller)\s+([A-Z][A-Z\s]*)\n/
+  );
   const name = nameMatch ? nameMatch[1].trim() : "Not found";
 
   // Passport Number
@@ -133,11 +132,16 @@ function OneWayExtractFields(text) {
   const originMatch = text.match(/Origin\s+(.+)/);
   const origin = originMatch ? originMatch[1].trim() : "Not found";
 
-  const destinationMatch = text.match(/Destination\s+(.+)/);
+  // Destination extraction with separate variables for departure and arrival
+  const destinationMatch = text.match(/Departure Flight\s+(.+)/);
   const destination = destinationMatch
     ? destinationMatch[1].trim()
     : "Not found";
 
+  // Split the destination into departure and arrival locations
+ const [departure, arrival] = destination
+   .split(" To ")
+   .map((item) => item.trim().replace(/^-/, ""));
   // Date
   const dateMatch = text.match(/\b\d{2} [A-Za-z]+ \d{4}\b/);
   const date = dateMatch ? dateMatch[0] : "Not found";
@@ -154,21 +158,21 @@ function OneWayExtractFields(text) {
   const terminalMatch = text.match(/Departure Terminal:\s+(\w+)/);
   const terminal = terminalMatch ? terminalMatch[1] : "Not found";
 
-  // // Base Price- not present in input file
-  // const basePriceMatch = text.match(/Adult Base Price:\s+(\d+\.?\d*)/);
-  // const basePrice = basePriceMatch ? basePriceMatch[1] : "Not found";
+  // Base Price- not present in input file
+  const basePriceMatch = text.match(/Adult Base Price:\s+(\d+\.?\d*)/);
+  const basePrice = basePriceMatch ? basePriceMatch[1] : "Not found";
 
-  // // Airport Tax
-  // const airportTaxMatch = text.match(/Adult Airport Tax:\s+(\d+\.?\d*)/);
-  // const airportTax = airportTaxMatch ? airportTaxMatch[1] : "Not found";
+  // Airport Tax
+  const airportTaxMatch = text.match(/Adult Airport Tax:\s+(\d+\.?\d*)/);
+  const airportTax = airportTaxMatch ? airportTaxMatch[1] : "Not found";
 
-  // // Service Tax
-  // const serviceTaxMatch = text.match(/Adult Service Tax:\s+(\d+\.?\d*)/);
-  // const serviceTax = serviceTaxMatch ? serviceTaxMatch[1] : "Not found";
+  // Service Tax
+  const serviceTaxMatch = text.match(/Adult Service Tax:\s+(\d+\.?\d*)/);
+  const serviceTax = serviceTaxMatch ? serviceTaxMatch[1] : "Not found";
 
-  // // Total Price
-  // const totalPriceMatch = text.match(/Adult Total Price:\s+(\d+\.?\d*)/);
-  // const totalPrice = totalPriceMatch ? totalPriceMatch[1] : "Not found";
+  // Total Price
+  const totalPriceMatch = text.match(/Adult Total Price:\s+(\d+\.?\d*)/);
+  const totalPrice = totalPriceMatch ? totalPriceMatch[1] : "Not found";
 
   return {
     name,
@@ -180,15 +184,17 @@ function OneWayExtractFields(text) {
     pnr,
     eTicket,
     origin,
-    destination,
+
     date,
     time,
     baggage,
     terminal,
-    // basePrice,
-    // airportTax,
-    // serviceTax,
-    // totalPrice,
+    basePrice,
+    airportTax,
+    serviceTax,
+    totalPrice,
+    departure,
+    arrival,
   };
 }
 

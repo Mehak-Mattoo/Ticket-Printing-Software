@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 export default function FileUploadComponent() {
   const [file, setFile] = useState(null);
@@ -11,6 +13,8 @@ export default function FileUploadComponent() {
   const [uploadError, setUploadError] = useState(null);
   const [extractError, setExtractError] = useState(null);
   const backendUrl = import.meta.env.VITE_AUTH_BACKEND; // Get backend URL
+
+    const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -43,12 +47,13 @@ export default function FileUploadComponent() {
 
       // Handle success response
       if (response.data.success) {
-        setError(false);
-        setResult(response.data.extractedData);
-        console.log(response.data.extractedData);
+        // setError(false);
+        // setResult(response.data.extractedData);
+        // console.log(response.data.extractedData);
 
         setMessage("File uploaded successfully!");
         console.log(response.data);
+        getExtractedPdfContent()
       }
     } catch (err) {
       setError(true);
@@ -65,6 +70,11 @@ export default function FileUploadComponent() {
 
       if (response.data.success) {
         setExtractedData(response.data.extractedData);
+        console.log(response.data);
+        
+          navigate("/one-way", {
+            state: { extractedData: response.data.extractedData },
+          });
       } else {
         setExtractError("Failed to extract content");
       }
@@ -100,21 +110,7 @@ export default function FileUploadComponent() {
         </div>
       )}
 
-      {result && (
-        <div>
-          <h2>Parsed Data</h2>
-          {/* If result is an object, stringify it or access specific properties */}
-          {/* <p>{JSON.stringify(result)}</p> Converts object to a readable string */}
-
-          {/* Alternatively, if you want to display specific fields */}
-          {result.success && (
-            <p>
-              <strong>Success:</strong> {result.success ? "Yes" : "No"}
-            </p>
-          )}
-        
-        </div>
-      )}
+     
 
       {file && !isLoading && (
         <div>

@@ -1,12 +1,90 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import header from "../../src/assets/header.png";
+import logo from "../../src/assets/agencylogo.png";
+import "../App.css";
+import { useLocation } from "react-router-dom";
 
 const OneWayTicket = () => {
+  const location = useLocation();
+  const { extractedData } = location.state || {};
+
+  const [passenger, setPassenger] = useState({
+    name: "",
+    passportNum: 0,
+    DOB: 0,
+    status: "",
+  });
+
+  const [flight, setFlight] = useState({
+    airline: "",
+    FlightNum: 0,
+    cabin: "",
+    stop: 0,
+    airlinePNR: 0,
+    ETicketNum: 0,
+    origin: "",
+    destination: "",
+    date: 0,
+    time: 0,
+    baggage: "",
+    departureTerminal: "",
+  });
+
+  const [price, setPrice] = useState({
+    basePrice: 0,
+    airportTax: 0,
+    serviceTax: 0,
+    totalPrice: 0,
+  });
+
+  useEffect(() => {
+    if (extractedData) {
+      console.log(extractedData);
+
+      // Update passenger state
+      setPassenger((prevState) => ({
+        ...prevState,
+        name: extractedData.name || "",
+        passportNum: extractedData.passportNumber || "",
+        DOB: extractedData.DOB || "",
+        status: extractedData.status || "",
+      }));
+
+      // Update flight state
+      setFlight((prevState) => ({
+        ...prevState,
+        airline: extractedData.airlineName || "",
+        flightNum: extractedData.flightNumber || "",
+        cabin: extractedData.cabin || "",
+        stop: extractedData.stops || "",
+        airlinePNR: extractedData.pnr || "",
+        eTicketNum: extractedData.eTicket || "",
+        origin: extractedData.origin || "",
+        destination: extractedData.destination || "",
+        date: extractedData.date || "",
+        time: extractedData.time || "",
+        baggage: extractedData.baggage || "",
+        departureTerminal: extractedData.departureTerminal || "",
+      }));
+
+      // Update price state
+      setPrice((prevState) => ({
+        ...prevState,
+        basePrice: extractedData.basePrice || 0,
+        airportTax: extractedData.airportTax || 0,
+        serviceTax: extractedData.serviceTax || 0,
+        totalPrice: extractedData.totalPrice || 0,
+      }));
+    }
+  }, [extractedData]);
+
   return (
     <>
       <div>
-        <img src={header} alt="smh-agency" />
+        <img src={header} className="" alt="smh-agency" />
         <div className="my-2">
+          <img className="w-40 ml-5" src={logo} alt="smh-agency" />
+
           {/* 1st table */}
           <div className="m-3">
             <h2 className="bg-skyBlue">PASSENGER DETAILS</h2>
@@ -31,10 +109,10 @@ const OneWayTicket = () => {
                 <tbody className=" bg-[#cef1f9] text-center align-middle ">
                   <tr className=" ">
                     <td className="border border-cyan-500 px-4 py-2">
-                      The Sliding Mr. Bones (Next Stop, Pottersville)
+                      {passenger.name}
                     </td>
                     <td className="border border-cyan-500 px-4 py-2">
-                      Malcolm Lockyer
+                      {passenger.passportNum}
                     </td>
                     <td className="border border-cyan-500 px-4 py-2">1961</td>
                     <td className="border border-cyan-500 px-4 py-2">Active</td>
@@ -85,139 +163,135 @@ const OneWayTicket = () => {
               </table>
             </div>
           </div>
+          <div className="img-bg">
+            {/* 3rd table- 1st part */}
+            <div className="m-3">
+              <h2 className="bg-skyBlue ">FLIGHT DETAILS</h2>
+              <div className="overflow-x-auto flex">
+                <img src="" alt="logo" />
+                <table className="table-auto border-2 my-3 border-cyan-500 border-3  w-full">
+                  <thead>
+                    <tr className="border">
+                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                        Airline
+                      </th>
+                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                        Flight No./Aircraft Type
+                      </th>
+                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                        Cabin
+                      </th>
+                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                        Stop
+                      </th>
+                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                        Airline PNR
+                      </th>
+                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                        E-Ticket Number
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className=" bg-[#cef1f9] text-center align-middle border border-borderBlue">
+                    <tr className="">
+                      <td className=" border border-cyan-500 px-4 py-2">
+                        {flight.airline}
+                      </td>
+                      <td className="border border-cyan-500 px-4 py-2">
+                        {flight.flightNum}
+                      </td>
+                      <td className="border border-cyan-500 px-4 py-2">
+                        {flight.cabin}
+                      </td>
+                      <td className="border border-cyan-500 px-4 py-2">
+                        {flight.stop}
+                      </td>
+                      <td className=" border border-cyan-500 px-4 py-2">
+                        {flight.airlinePNR}
+                      </td>
+                      <td className=" border border-cyan-500 px-4 py-2">
+                        {flight.eTicketNum}
+                      </td>
+                    </tr>
+                  </tbody>
 
-          {/* 3rd table- 1st part */}
-          <div className="m-3">
-            <h2 className="bg-skyBlue ">FLIGHT DETAILS</h2>
-            <div className="overflow-x-auto flex">
-              <img src="" alt="logo" />
-              <table className="table-auto border-2 my-3 border-cyan-500 border-3  w-full">
-                <thead>
-                  <tr className="border">
-                    <th className="font-bold border border-cyan-500 px-4 py-2">
-                      Airline
-                    </th>
-                    <th className="font-bold border border-cyan-500 px-4 py-2">
-                      Flight No./Aircraft Type
-                    </th>
-                    <th className="font-bold border border-cyan-500 px-4 py-2">
-                      Cabin
-                    </th>
-                    <th className="font-bold border border-cyan-500 px-4 py-2">
-                      Stop
-                    </th>
-                    <th className="font-bold border border-cyan-500 px-4 py-2">
-                      Airline PNR
-                    </th>
-                    <th className="font-bold border border-cyan-500 px-4 py-2">
-                      E-Ticket Number
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className=" bg-[#cef1f9] text-center align-middle border border-borderBlue">
-                  <tr className="">
-                    <td className="font-bold border border-cyan-500 px-4 py-2">
-                      {" "}
-                    </td>
-                    <td className="font-bold border border-cyan-500 px-4 py-2">
-                      {" "}
-                    </td>
-                    <td className="font-bold border border-cyan-500 px-4 py-2">
-                      {" "}
-                    </td>
-                    <td className="font-bold border border-cyan-500 px-4 py-2">
-                      {" "}
-                    </td>
-                    <td className="font-bold border border-cyan-500 px-4 py-2">
-                      {" "}
-                    </td>
-                    <td className="font-bold border border-cyan-500 px-4 py-2">
-                      {" "}
-                    </td>
-                  </tr>
-                </tbody>
+                  {/* 3rd table- 2nd part */}
 
-                {/* 3rd table- 2nd part */}
-
-                <thead>
-                  <tr className="border">
-                    <th className="font-bold border border-cyan-500 px-4 py-2">
-                      Origin
-                    </th>
-                    <th className="font-bold border border-cyan-500 px-4 py-2">
-                      Destination
-                    </th>
-                    <th className="font-bold border border-cyan-500 px-4 py-2">
-                      Date
-                    </th>
-                    <th className="font-bold border border-cyan-500 px-4 py-2">
-                      Time
-                    </th>
-                    <th className="font-bold border border-cyan-500 px-4 py-2">
-                      Baggage
-                    </th>
-                    <th className="font-bold border border-cyan-500 px-4 py-2">
-                      Departure Terminal
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className=" bg-bgBlue text-center align-middle border border-borderBlue">
-                  <tr className="">
-                    <td className="font-bold border border-cyan-500 px-4 py-2">
-                      {" "}
-                    </td>
-                    <td className="font-bold border border-cyan-500 px-4 py-2">
-                      {" "}
-                    </td>
-                    <td className="font-bold border border-cyan-500 px-4 py-2">
-                      {" "}
-                    </td>
-                    <td className="font-bold border border-cyan-500 px-4 py-2">
-                      {" "}
-                    </td>
-                    <td className="font-bold border border-cyan-500 px-4 py-2">
-                      {" "}
-                    </td>
-                    <td className="font-bold border border-cyan-500 px-4 py-2">
-                      {" "}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                  <thead>
+                    <tr className="border">
+                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                        Origin
+                      </th>
+                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                        Destination
+                      </th>
+                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                        Date
+                      </th>
+                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                        Time
+                      </th>
+                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                        Baggage
+                      </th>
+                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                        Departure Terminal
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className=" bg-bgBlue text-center align-middle border border-borderBlue">
+                    <tr className="">
+                      <td className="border border-cyan-500 px-4 py-2">
+                        {flight.origin}
+                      </td>
+                      <td className=" border border-cyan-500 px-4 py-2">
+                        {flight.destination}
+                      </td>
+                      <td className="border border-cyan-500 px-4 py-2">
+                        {flight.date}
+                      </td>
+                      <td className=" border border-cyan-500 px-4 py-2">
+                        {flight.time}
+                      </td>
+                      <td className=" border border-cyan-500 px-4 py-2">
+                        {flight.baggage}
+                      </td>
+                      <td className=" border border-cyan-500 px-4 py-2"> </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
 
-          {/* 4 table */}
+            {/* 4 table */}
 
-          <div className="m-3">
-            <h2 className="bg-skyBlue ">PRICE DETAILS</h2>
+            <div className="m-3 mb-[10rem]">
+              <h2 className="bg-skyBlue ">PRICE DETAILS</h2>
 
-            <div className="border border-cyan-500 border-3 max-w-md my-3">
-              {/* Table Rows */}
-              <div className="flex justify-between border-b border-cyan-500 ">
-                <div className="font-semibold text-left w-1/2  ">
-                  Base Price
+              <div className="border border-cyan-500 border-3 max-w-md my-3">
+                <div className="flex justify-between border-b text-center border-cyan-500 ">
+                  <div className="font-semibold  w-1/2  ">Base Price</div>
+                  <div className="font-bold  w-1/2  border-cyan-500  border-l-2">
+                    --
+                  </div>
                 </div>
-                <div className="font-bold text-right w-1/2  border-cyan-500  border-l-2">
-                  --
+                <div className="flex justify-between border-b text-center border-cyan-500  bg-bgBlue">
+                  <div className="font-semibold w-1/2">Airport Tax</div>
+                  <div className="font-bold w-1/2  border-cyan-500  border-l-2">
+                    --
+                  </div>
                 </div>
-              </div>
-              <div className="flex justify-between border-b border-cyan-500  bg-bgBlue">
-                <div className="font-semibold text-left w-1/2">Airport Tax</div>
-                <div className="font-bold text-right w-1/2  border-cyan-500  border-l-2">
-                  --
+                <div className="flex justify-between border-b text-center border-cyan-500 ">
+                  <div className="font-semibold w-1/2">Service Tax</div>
+                  <div className="font-bold w-1/2  border-cyan-500  border-l-2">
+                    --
+                  </div>
                 </div>
-              </div>
-              <div className="flex justify-between border-b border-cyan-500 ">
-                <div className="font-semibold text-left w-1/2">Service Tax</div>
-                <div className="font-bold text-right w-1/2  border-cyan-500  border-l-2">
-                  --
-                </div>
-              </div>
-              <div className="flex justify-between  bg-bgBlue">
-                <div className="font-semibold text-left w-1/2">Total Price</div>
-                <div className="font-bold text-right w-1/2  border-cyan-500  border-l-2">
-                  --
+                <div className="flex justify-between text-center bg-bgBlue">
+                  <div className="font-semibold  w-1/2">Total Price</div>
+                  <div className="font-bold w-1/2  border-cyan-500  border-l-2">
+                    --
+                  </div>
                 </div>
               </div>
             </div>
