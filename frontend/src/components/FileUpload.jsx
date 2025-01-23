@@ -1,37 +1,43 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import Alert from "../helper/Alert"; // Import the custom AlertComponent
 
 export default function FileUploadComponent() {
   const [file, setFile] = useState(null);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState(false);
-  const [result, setResult] = useState(null);
-  const [extractedData, setExtractedData] = useState(null);
+  const [alertMessage, setAlertMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [uploadError, setUploadError] = useState(null);
-  const [extractError, setExtractError] = useState(null);
+  const [routeSelection, setRouteSelection] = useState("one-way"); // Added route selection state
   const backendUrl = import.meta.env.VITE_AUTH_BACKEND; // Get backend URL
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
+  };
+
+  const handleRouteChange = (e) => {
+    setRouteSelection(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!file) {
-      setError(true);
-      setMessage("Please select a file.");
+      setAlertMessage({
+        category: "error", // Red background for error
+        title: "Error",
+        description: "Please select a file.",
+      });
       return;
     }
 
     if (file.type !== "application/pdf") {
-      setError(true);
-      setMessage("Only PDF files are allowed.");
+      setAlertMessage({
+        category: "error", // Red background for error
+        title: "Error",
+        description: "Only PDF files are allowed.",
+      });
       return;
     }
 
@@ -45,49 +51,55 @@ export default function FileUploadComponent() {
         },
       });
 
-      // Handle success response
       if (response.data.success) {
-        // setError(false);
-        // setResult(response.data.extractedData);
-        // console.log(response.data.extractedData);
-
-        setMessage("File uploaded successfully!");
+        setAlertMessage({
+          category: "success",
+          title: "Success",
+          description: "File uploaded successfully!",
+        });
         console.log(response.data);
-        getExtractedPdfContent()
+        getExtractedPdfContent();
       }
     } catch (err) {
-      setError(true);
-      setMessage("There was an error uploading the file.");
+      setAlertMessage({
+        category: "error",
+        title: "Error",
+        description: "There was an error uploading the file.",
+      });
     }
   };
 
   const getExtractedPdfContent = async () => {
     setIsLoading(true);
-    setExtractError(null);
 
     try {
       const response = await axios.get(`${backendUrl}/extract-pdf-content`);
 
       if (response.data.success) {
-        setExtractedData(response.data.extractedData);
-        console.log(response.data);
-        
-          navigate("/one-way", {
-            state: { extractedData: response.data.extractedData },
-          });
-      } else {
-        setExtractError("Failed to extract content");
+        // Conditionally navigate based on the selected route
+        navigate(`/${routeSelection}`, {
+          state: { extractedData: response.data.extractedData },
+        });
       }
     } catch (error) {
-      setExtractError("Error extracting content");
       console.error(error);
+
+      setAlertMessage({
+        category: "error",
+        title: "Error",
+        description: "Failed to extract content.",
+      });
     } finally {
       setIsLoading(false);
     }
   };
+
   return (
-    <div>
-      <h2>Upload PDF</h2>
+    <div className="bg-skyBlue h-screen flex flex-col  items-center justify-center">
+      <h2 className="font-bold text-4xl">
+        Effortlessly <span className="font-extrabold"> Extract Data</span> from
+        PDFs in Seconds
+      </h2>
       <form onSubmit={handleSubmit}>
         <input
           type="file"
@@ -96,38 +108,38 @@ export default function FileUploadComponent() {
         />
         <button type="submit">Upload</button>
       </form>
-      {message && (
-        <div
-          style={{
-            marginTop: "10px",
-            padding: "10px",
-            color: error ? "red" : "green",
-            border: `1px solid ${error ? "red" : "green"}`,
-            borderRadius: "4px",
-          }}
-        >
-          {message}
-        </div>
+
+      {/* Radio buttons for route selection */}
+      <div>
+        <label>
+          <input
+            type="radio"
+            name="route"
+            value="one-way"
+            checked={routeSelection === "one-way"}
+            onChange={handleRouteChange}
+          />
+          One Way
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="route"
+            value="two-way"
+            checked={routeSelection === "two-way"}
+            onChange={handleRouteChange}
+          />
+          Two Way
+        </label>
+      </div>
+
+      {alertMessage && (
+        <Alert
+          category={alertMessage.category}
+          title={alertMessage.title}
+          description={alertMessage.description}
+        />
       )}
-
-     
-
-      {file && !isLoading && (
-        <div>
-          <button onClick={getExtractedPdfContent} disabled={isLoading}>
-            {isLoading ? "Extracting..." : "Extract PDF Content"}
-          </button>
-        </div>
-      )}
-
-      {extractedData && (
-        <div>
-          <h2>Extracted Content</h2>
-          <pre>{JSON.stringify(extractedData, null, 2)}</pre>
-        </div>
-      )}
-
-      {extractError && <p style={{ color: "red" }}>{extractError}</p>}
     </div>
   );
 }

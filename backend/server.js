@@ -55,7 +55,6 @@ app.post("/upload-pdf", upload.single("pdf"), async (req, res) => {
         .json({ success: false, message: "No file uploaded" });
     }
 
-   
     uploadedFile = req.file.buffer;
 
     res
@@ -104,12 +103,17 @@ function OneWayExtractFields(text) {
   const passportMatch = text.match(/Passport Number\s+([A-Z0-9]+)/);
   const passportNumber = passportMatch ? passportMatch[1] : "Not found";
 
+  const dobMatch = text.match(
+    /\b(?:DOB|Date of Birth):?\s*(\d{2}[-/]\d{2}[-/]\d{4})\b/
+  );
+  const dob = dobMatch ? dobMatch[1].trim() : "Not found";
+
   // Airline Name
   const airlineMatch = text.match(/Airline:\s+(.+)/);
   const airlineName = airlineMatch ? airlineMatch[1].trim() : "Not found";
 
   // Flight Number
-  const flightNumberMatch = text.match(/Flight Number:\s+(\w+\d+)/);
+  const flightNumberMatch = text.match(/Flight (?:Number|No):\s+(\w+\d+)/);
   const flightNumber = flightNumberMatch ? flightNumberMatch[1] : "Not found";
 
   // Cabin
@@ -117,8 +121,8 @@ function OneWayExtractFields(text) {
   const cabin = cabinMatch ? cabinMatch[1] : "Not found";
 
   // Stops
-  const stopsMatch = text.match(/Duration:.*?(\d+H \d+M)/);
-  const stops = stopsMatch ? stopsMatch[1] : "Not found";
+  const stopsMatch = text.match(/Stop:.*?(\d+H \d+M)/);
+  const stops = stopsMatch ? stopsMatch[1] : "0";
 
   // Airline PNR
   const pnrMatch = text.match(/Airline reservation code \(PNR\):\s+(\w+)/);
@@ -128,20 +132,32 @@ function OneWayExtractFields(text) {
   const ticketMatch = text.match(/Ticket Number:\s+(\d+)/);
   const eTicket = ticketMatch ? ticketMatch[1] : "Not found";
 
-  // Origin and Destination
-  const originMatch = text.match(/Origin\s+(.+)/);
-  const origin = originMatch ? originMatch[1].trim() : "Not found";
-
-  // Destination extraction with separate variables for departure and arrival
-  const destinationMatch = text.match(/Departure Flight\s+(.+)/);
-  const destination = destinationMatch
-    ? destinationMatch[1].trim()
+  // Extract Origin Airport Name
+  const originAirportMatch = text.match(/Origin\s+([\w\s()]+)\n/);
+  const originAirport = originAirportMatch
+    ? originAirportMatch[1].trim()
     : "Not found";
 
-  // Split the destination into departure and arrival locations
- const [departure, arrival] = destination
-   .split(" To ")
-   .map((item) => item.trim().replace(/^-/, ""));
+  // Extract Origin City and Country
+  const originCityCountryMatch = text.match(/Origin\s+[\w\s()]+\n(.+)\n/);
+  const originCityCountry = originCityCountryMatch
+    ? originCityCountryMatch[1].trim()
+    : "Not found";
+
+  // Extract Destination Airport Name
+  const destinationAirportMatch = text.match(/Destination\s+([\w\s()]+)\n/);
+  const destinationAirport = destinationAirportMatch
+    ? destinationAirportMatch[1].trim()
+    : "Not found";
+
+  // Extract Destination City and Country
+  const destinationCityCountryMatch = text.match(
+    /Destination\s+[\w\s()]+\n(.+)\n/
+  );
+  const destinationCityCountry = destinationCityCountryMatch
+    ? destinationCityCountryMatch[1].trim()
+    : "Not found";
+
   // Date
   const dateMatch = text.match(/\b\d{2} [A-Za-z]+ \d{4}\b/);
   const date = dateMatch ? dateMatch[0] : "Not found";
@@ -176,6 +192,7 @@ function OneWayExtractFields(text) {
 
   return {
     name,
+    dob,
     passportNumber,
     airlineName,
     flightNumber,
@@ -183,8 +200,10 @@ function OneWayExtractFields(text) {
     stops,
     pnr,
     eTicket,
-    origin,
-
+    originAirport,
+    originCityCountry,
+    destinationAirport,
+    destinationCityCountry,
     date,
     time,
     baggage,
@@ -193,8 +212,6 @@ function OneWayExtractFields(text) {
     airportTax,
     serviceTax,
     totalPrice,
-    departure,
-    arrival,
   };
 }
 

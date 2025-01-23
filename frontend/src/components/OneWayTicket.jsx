@@ -46,7 +46,7 @@ const OneWayTicket = () => {
         ...prevState,
         name: extractedData.name || "",
         passportNum: extractedData.passportNumber || "",
-        DOB: extractedData.DOB || "",
+        DOB: extractedData.dob || "",
         status: extractedData.status || "",
       }));
 
@@ -59,12 +59,15 @@ const OneWayTicket = () => {
         stop: extractedData.stops || "",
         airlinePNR: extractedData.pnr || "",
         eTicketNum: extractedData.eTicket || "",
-        origin: extractedData.origin || "",
-        destination: extractedData.destination || "",
+        origin:
+          extractedData.originAirport + ", "+extractedData.originCityCountry || "",
+        destination:
+          extractedData.destinationAirport + ", "+
+            extractedData.destinationCityCountry || "",
         date: extractedData.date || "",
         time: extractedData.time || "",
         baggage: extractedData.baggage || "",
-        departureTerminal: extractedData.departureTerminal || "",
+        departureTerminal: extractedData.originAirport || "",
       }));
 
       // Update price state
@@ -83,7 +86,7 @@ const OneWayTicket = () => {
       <div>
         <img src={header} className="" alt="smh-agency" />
         <div className="my-2">
-          <img className="w-40 ml-5" src={logo} alt="smh-agency" />
+          <img className="w-1/6 ml-5" src={logo} alt="smh-agency" />
 
           {/* 1st table */}
           <div className="m-3">
@@ -114,8 +117,8 @@ const OneWayTicket = () => {
                     <td className="border border-cyan-500 px-4 py-2">
                       {passenger.passportNum}
                     </td>
-                    <td className="border border-cyan-500 px-4 py-2">1961</td>
-                    <td className="border border-cyan-500 px-4 py-2">Active</td>
+                    <td className="border border-cyan-500 px-4 py-2">{passenger.DOB}</td>
+                    <td className="border border-cyan-500 px-4 py-2">{passenger.status}</td>
                   </tr>
                 </tbody>
               </table>
@@ -256,7 +259,9 @@ const OneWayTicket = () => {
                       <td className=" border border-cyan-500 px-4 py-2">
                         {flight.baggage}
                       </td>
-                      <td className=" border border-cyan-500 px-4 py-2"> </td>
+                      <td className=" border border-cyan-500 px-4 py-2">
+                        {flight.departureTerminal}{" "}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
