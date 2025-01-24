@@ -3,6 +3,7 @@ import header from "../../src/assets/header.png";
 import logo from "../../src/assets/agencylogo.png";
 import "../App.css";
 import { useLocation } from "react-router-dom";
+import PrimaryBtn from "../helper/PrimaryBtn";
 
 const TwoWayTicket = () => {
   const location = useLocation();
@@ -87,12 +88,21 @@ const TwoWayTicket = () => {
   return (
     <>
       <div>
-        <img src={header} className="" alt="smh-agency" />
-        <div className="my-2">
+        <PrimaryBtn
+          bgColor="bg-aquamarine"
+          onClick={() => {
+            window.print();
+          }}
+        >
+          {" "}
+          download
+        </PrimaryBtn>
+        <img src={header} className="w-full h-24" alt="smh-agency" />
+        <div className="">
           <img className="w-1/6 ml-5" src={logo} alt="smh-agency" />
 
           {/* 1st table */}
-          <div className="m-3">
+          <div className="mx-3 text-sm ">
             <h2 className="bg-skyBlue">PASSENGER DETAILS</h2>
             <div className="overflow-x-auto">
               <table className="table-auto border-2 my-3 border-cyan-500 border-3  w-full">
@@ -133,7 +143,7 @@ const TwoWayTicket = () => {
           </div>
 
           {/* 2nd table */}
-          <div className="m-3">
+          <div className="mx-3 text-sm ">
             <h2 className="bg-skyBlue">AGENT DETAILS</h2>
             <div className="overflow-x-auto">
               <table className="table-auto border-2 my-3 border-cyan-500 border-3  w-full">
@@ -175,7 +185,7 @@ const TwoWayTicket = () => {
           </div>
           <div className="img-bg">
             {/* 3rd table- 1st part */}
-            <div className="m-3">
+            <div className="mx-3 text-sm ">
               <h2 className="bg-skyBlue ">FLIGHT DETAILS</h2>
               <div className="overflow-x-auto flex">
                 <img src="" alt="logo" />
@@ -275,7 +285,7 @@ const TwoWayTicket = () => {
               </div>
             </div>
 
-            <div className="m-3">
+            <div className="mx-3 text-sm ">
               {/* 3rd table- 3rd part */}
 
               <div className="overflow-x-auto flex">
@@ -378,7 +388,7 @@ const TwoWayTicket = () => {
 
             {/* 4 table */}
 
-            <div className="m-3 mb-[10rem]">
+            <div className="mx-3 text-sm ">
               <h2 className="bg-skyBlue ">PRICE DETAILS</h2>
 
               <div className="border border-cyan-500 border-3 max-w-md my-3">

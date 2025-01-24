@@ -3,6 +3,7 @@ import header from "../../src/assets/header.png";
 import logo from "../../src/assets/agencylogo.png";
 import "../App.css";
 import { useLocation } from "react-router-dom";
+import PrimaryBtn from "../helper/PrimaryBtn";
 
 const OneWayTicket = () => {
   const location = useLocation();
@@ -84,13 +85,22 @@ const OneWayTicket = () => {
   return (
     <>
       <div>
-        <img src={header} className="" alt="smh-agency" />
-        <div className="my-2">
+        <PrimaryBtn
+          bgColor="bg-aquamarine"
+          onClick={() => {
+            window.print();
+          }}
+        >
+          {" "}
+          download
+        </PrimaryBtn>
+        <img src={header} className="w-full h-2" alt="smh-agency" />
+        <div className="">
           <img className="w-1/6 ml-5" src={logo} alt="smh-agency" />
 
           {/* 1st table */}
-          <div className="m-3">
-            <h2 className="bg-skyBlue">PASSENGER DETAILS</h2>
+          <div className="mx-3 text-sm ">
+            <h2 className="bg-skyBlue ">PASSENGER DETAILS</h2>
             <div className="overflow-x-auto">
               <table className="table-auto border-2 my-3 border-cyan-500 border-3  w-full">
                 <thead className="">
@@ -117,8 +127,12 @@ const OneWayTicket = () => {
                     <td className="border border-cyan-500 px-4 py-2">
                       {passenger.passportNum}
                     </td>
-                    <td className="border border-cyan-500 px-4 py-2">{passenger.DOB}</td>
-                    <td className="border border-cyan-500 px-4 py-2">{passenger.status}</td>
+                    <td className="border border-cyan-500 px-4 py-2">
+                      {passenger.DOB}
+                    </td>
+                    <td className="border border-cyan-500 px-4 py-2">
+                      {passenger.status}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -126,7 +140,7 @@ const OneWayTicket = () => {
           </div>
 
           {/* 2nd table */}
-          <div className="m-3">
+          <div className="mx-3 text-sm ">
             <h2 className="bg-skyBlue">AGENT DETAILS</h2>
             <div className="overflow-x-auto">
               <table className="table-auto border-2 my-3 border-cyan-500 border-3  w-full">
@@ -168,7 +182,7 @@ const OneWayTicket = () => {
           </div>
           <div className="img-bg">
             {/* 3rd table- 1st part */}
-            <div className="m-3">
+            <div className="mx-3 text-sm ">
               <h2 className="bg-skyBlue ">FLIGHT DETAILS</h2>
               <div className="overflow-x-auto flex">
                 <img src="" alt="logo" />
@@ -270,7 +284,7 @@ const OneWayTicket = () => {
 
             {/* 4 table */}
 
-            <div className="m-3 mb-[10rem]">
+            <div className="mx-3 text-sm ">
               <h2 className="bg-skyBlue ">PRICE DETAILS</h2>
 
               <div className="border border-cyan-500 border-3 max-w-md my-3">

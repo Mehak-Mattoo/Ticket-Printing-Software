@@ -40,9 +40,10 @@ const Alert = ({ category, title, description }) => {
         backgroundColor: bgColor,
         borderColor: borderColor,
         color: textColor,
-        padding: "15px",
+        padding: "5px 15px",
+        textAlign:"center",
         borderRadius: "8px",
-        marginBottom: "15px",
+        margin: "15px",
         border: `1px solid ${borderColor}`,
       }}
     >

@@ -5,6 +5,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const path = require("path");
+const { log } = require("console");
 
 require("dotenv").config();
 
@@ -80,7 +81,7 @@ app.get("/extract-pdf-content", async (req, res) => {
 
     const data = await pdfParse(uploadedFile);
 
-    const extractedData = OneWayExtractFields(data.text);
+    const extractedData = RoundTripExtractFields(data.text);
 
     res.status(200).json({ success: true, extractedData });
   } catch (error) {
@@ -94,6 +95,7 @@ app.get("/extract-pdf-content", async (req, res) => {
 });
 
 function OneWayExtractFields(text) {
+  console.log(text);
   const nameMatch = text.match(
     /(?:Passenger’s Name|Traveller)\s+([A-Z][A-Z\s]*)\n/
   );
@@ -109,8 +111,8 @@ function OneWayExtractFields(text) {
   const dob = dobMatch ? dobMatch[1].trim() : "Not found";
 
   // Airline Name
-  const airlineMatch = text.match(/Airline:\s+(.+)/);
-  const airlineName = airlineMatch ? airlineMatch[1].trim() : "Not found";
+  const airlineMatches = [...text.matchAll(/Airline\s+([^\n]+)/g)];
+  const airlineName = airlineMatches.map((match) => match[1].trim());
 
   // Flight Number
   const flightNumberMatch = text.match(/Flight (?:Number|No):\s+(\w+\d+)/);
@@ -167,7 +169,7 @@ function OneWayExtractFields(text) {
   const time = timeMatch ? timeMatch[0] : "Not found";
 
   // Baggage
-  const baggageMatch = text.match(/Checked-in baggage\s+(\d+Kg)/);
+  const baggageMatch = text.match(/Baggage\s+(\d+Kg)/);
   const baggage = baggageMatch ? baggageMatch[1] : "Not found";
 
   // Departure Terminal (if mentioned)
@@ -218,13 +220,15 @@ function OneWayExtractFields(text) {
 function RoundTripExtractFields(text) {
   // Passenger or Traveler Names
   const nameMatches = [
-    ...text.matchAll(/(?:Passenger’s Name|Traveler|Traveller):?\s*([A-Z\s]+)/g),
+    ...text.matchAll(
+      /(?:Passenger’s Name|Traveler|Traveller|Traveler):?\s*([A-Z\s]+)(?=\n|$)/g
+    ),
   ];
   const names = nameMatches.map((match) => match[1].trim());
 
-  // // Passport Numbers
-  // const passportMatches = [...text.matchAll(/Passport Number\s*([A-Z0-9]+)/g)];
-  // const passportNumbers = passportMatches.map((match) => match[1]);
+  // Passport Numbers
+  const passportMatches = [...text.matchAll(/Passport Number\s*([A-Z0-9]+)/g)];
+  const passportNumbers = passportMatches.map((match) => match[1]);
 
   // Flight Numbers
   const flightNumberMatches = [...text.matchAll(/Flight No\s+(\d+)/g)];

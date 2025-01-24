@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Alert from "../helper/Alert"; // Import the custom AlertComponent
+import PrimaryBtn from "../helper/PrimaryBtn";
 
 export default function FileUploadComponent() {
   const [file, setFile] = useState(null);
@@ -12,9 +13,20 @@ export default function FileUploadComponent() {
 
   const navigate = useNavigate();
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
+  // const handleFileChange = (e) => {
+  //   setFile(e.target.files[0]);
+  // };
+
+    const handleFileChange = (e) => {
+      const selectedFile = e.target.files[0];
+      if (selectedFile) {
+        setFile(selectedFile); // Store the selected file
+        // setAlertMessage(selectedFile.name); // Show file name as message
+      } else {
+        setFile(null); // Reset file if none is selected
+        setAlertMessage("No file selected"); // Show no file selected message
+      }
+    };
 
   const handleRouteChange = (e) => {
     setRouteSelection(e.target.value);
@@ -75,11 +87,14 @@ export default function FileUploadComponent() {
     try {
       const response = await axios.get(`${backendUrl}/extract-pdf-content`);
 
+      console.log(response.data);
+      
+
       if (response.data.success) {
         // Conditionally navigate based on the selected route
-        navigate(`/${routeSelection}`, {
-          state: { extractedData: response.data.extractedData },
-        });
+        // navigate(`/${routeSelection}`, {
+        //   state: { extractedData: response.data.extractedData },
+        // });
       }
     } catch (error) {
       console.error(error);
@@ -95,46 +110,76 @@ export default function FileUploadComponent() {
   };
 
   return (
-    <div className="bg-skyBlue h-screen flex flex-col  items-center justify-center">
-      <h2 className="font-bold text-4xl">
-        Effortlessly <span className="font-extrabold"> Extract Data</span> from
-        PDFs in Seconds
-      </h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="file"
-          accept="application/pdf"
-          onChange={handleFileChange}
-        />
-        <button type="submit">Upload</button>
-      </form>
+    <div className="bg-midnightGreen h-screen flex flex-col  items-center justify-center">
+      <div className=" max-w-lg text-center">
+        <h2 className="font-mono font-bold text-2xl md:text-4xl lg:text-6xl  text-aero">
+          Effortlessly
+          <br />
+          <span className="italic bg-aquamarine px-4 mb-7 rounded-full font-extrabold">
+            Extract Data
+          </span>
+          <br />
+          from PDFs in Seconds
+        </h2>
 
-      {/* Radio buttons for route selection */}
-      <div>
-        <label>
-          <input
-            type="radio"
-            name="route"
-            value="one-way"
-            checked={routeSelection === "one-way"}
-            onChange={handleRouteChange}
-          />
-          One Way
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="route"
-            value="two-way"
-            checked={routeSelection === "two-way"}
-            onChange={handleRouteChange}
-          />
-          Two Way
-        </label>
+        {/* Radio buttons for route selection */}
+        <div className="flex text-white items-center justify-center space-x-4 m-4">
+          <p className="mr-2">Select ticket type: </p>
+
+          {/* One Way Radio Button */}
+          <label className="flex items-center space-x-1">
+            <input
+              type="radio"
+              name="route"
+              value="one-way"
+              checked={routeSelection === "one-way"}
+              onChange={handleRouteChange}
+            />
+            <span>One Way</span>
+          </label>
+
+          {/* Two Way Radio Button */}
+          <label className="flex items-center space-x-1">
+            <input
+              type="radio"
+              name="route"
+              value="two-way"
+              checked={routeSelection === "two-way"}
+              onChange={handleRouteChange}
+            />
+            <span>Two Way</span>
+          </label>
+        </div>
+
+        <form
+          onSubmit={handleSubmit}
+          className="flex mt-5 items-center justify-between mx-auto  w-full max-w-sm"
+        >
+          {/* File Input Section */}
+          <label className="border border-aquamarine text-white rounded-full cursor-pointer px-4 py-2 ">
+            {/* <span className="">Choose a PDF file</span> */}
+            <span className="">
+             
+              Choose a PDF file {file ? ": "+ file.name :"" }
+            </span>
+            <input
+              type="file"
+              accept="application/pdf"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </label>
+
+          {/* Upload Button */}
+          <PrimaryBtn bgColor="bg-aquamarine" type="submit">
+            Upload
+          </PrimaryBtn>
+        </form>
       </div>
 
       {alertMessage && (
         <Alert
+        className="mt-5"
           category={alertMessage.category}
           title={alertMessage.title}
           description={alertMessage.description}
