@@ -71,7 +71,31 @@ app.post("/upload-pdf", upload.single("pdf"), async (req, res) => {
   }
 });
 
-app.get("/extract-pdf-content", async (req, res) => {
+app.get("/extract-one-way-pdf-details", async (req, res) => {
+  try {
+    if (!uploadedFile) {
+      return res
+        .status(400)
+        .json({ success: false, message: "No PDF uploaded" });
+    }
+
+    const data = await pdfParse(uploadedFile);
+
+    const extractedData = OneWayExtractFields(data.text);
+
+    res.status(200).json({ success: true, extractedData });
+  } catch (error) {
+    console.error("Error extracting PDF content:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to extract PDF content",
+      error: error.message,
+    });
+  }
+});
+
+
+app.get("/extract-two-way-pdf-details", async (req, res) => {
   try {
     if (!uploadedFile) {
       return res
@@ -111,8 +135,8 @@ function OneWayExtractFields(text) {
   const dob = dobMatch ? dobMatch[1].trim() : "Not found";
 
   // Airline Name
-  const airlineMatches = [...text.matchAll(/Airline\s+([^\n]+)/g)];
-  const airlineName = airlineMatches.map((match) => match[1].trim());
+  const airlineMatches = text.match(/Airline\s*:\s*([^\n]+)/);
+  const airlineName = airlineMatches ? airlineMatches[1].trim() : "Not found";
 
   // Flight Number
   const flightNumberMatch = text.match(/Flight (?:Number|No):\s+(\w+\d+)/);
@@ -169,8 +193,9 @@ function OneWayExtractFields(text) {
   const time = timeMatch ? timeMatch[0] : "Not found";
 
   // Baggage
-  const baggageMatch = text.match(/Baggage\s+(\d+Kg)/);
-  const baggage = baggageMatch ? baggageMatch[1] : "Not found";
+
+  const baggageMatch = text.match(/Checked-in baggage\s+(\d+\s?Kg)/i);
+  const baggage = baggageMatch ? baggageMatch[1].trim() : "Not found";
 
   // Departure Terminal (if mentioned)
   const terminalMatch = text.match(/Departure Terminal:\s+(\w+)/);
@@ -218,6 +243,8 @@ function OneWayExtractFields(text) {
 }
 
 function RoundTripExtractFields(text) {
+  console.log(text);
+  
   // Passenger or Traveler Names
   const nameMatches = [
     ...text.matchAll(
@@ -239,8 +266,9 @@ function RoundTripExtractFields(text) {
   const airlines = airlineMatches.map((match) => match[1].trim());
 
   // Airline PNRs
-  const pnrMatches = [...text.matchAll(/Airline PNR:\s*(\d+)/g)];
-  const airlinePnrs = pnrMatches.map((match) => match[1]);
+const pnrMatches = [...text.matchAll(/Airline PNR:\s*(\d+)-?/g)];
+const airlinePnrs = pnrMatches.map((match) => match[1]);
+
 
   // Cabin Classes
   const cabinMatches = [...text.matchAll(/Cabin\/Class\s*([A-Za-z]+)/g)];
@@ -266,7 +294,8 @@ function RoundTripExtractFields(text) {
   const times = timeMatches.map((match) => match[0]);
 
   // Price Details
-  const basePriceMatch = text.match(/Adult Base Price:\s*([\d,]+)/i);
+
+    const basePriceMatch = text.match(/Adult Base Price:\s*([\d,]+)/);
   const basePrice = basePriceMatch ? basePriceMatch[1] : "Not found";
 
   const airportTaxMatch = text.match(/Adult Airport Tax:\s*([\d,]+)/i);
@@ -280,7 +309,7 @@ function RoundTripExtractFields(text) {
 
   return {
     names,
-    // passportNumbers,
+     passportNumbers,
     flightNumbers,
     airlines,
     airlinePnrs,
