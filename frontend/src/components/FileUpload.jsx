@@ -13,18 +13,16 @@ export default function FileUploadComponent() {
 
   const navigate = useNavigate();
 
-  // const handleFileChange = (e) => {
-  //   setFile(e.target.files[0]);
-  // };
+
 
     const handleFileChange = (e) => {
       const selectedFile = e.target.files[0];
       if (selectedFile) {
         setFile(selectedFile); // Store the selected file
-        // setAlertMessage(selectedFile.name); // Show file name as message
+     
       } else {
-        setFile(null); // Reset file if none is selected
-        setAlertMessage("No file selected"); // Show no file selected message
+        setFile(null);
+        setAlertMessage("No file selected"); 
       }
     };
 
@@ -37,7 +35,7 @@ export default function FileUploadComponent() {
 
     if (!file) {
       setAlertMessage({
-        category: "error", // Red background for error
+        category: "error", 
         title: "Error",
         description: "Please select a file.",
       });
@@ -46,7 +44,7 @@ export default function FileUploadComponent() {
 
     if (file.type !== "application/pdf") {
       setAlertMessage({
-        category: "error", // Red background for error
+        category: "error", 
         title: "Error",
         description: "Only PDF files are allowed.",
       });
@@ -85,16 +83,22 @@ export default function FileUploadComponent() {
     setIsLoading(true);
 
     try {
-      const response = await axios.get(`${backendUrl}/extract-pdf-content`);
+      // const response = await axios.get(`${backendUrl}/extract-pdf-content`);
+       const endpoint =
+         routeSelection === "one-way"
+           ? `${backendUrl}/extract-one-way-pdf-details`
+           : `${backendUrl}/extract-two-way-pdf-details`;
+
+       const response = await axios.get(endpoint);
 
       console.log(response.data);
       
 
       if (response.data.success) {
         // Conditionally navigate based on the selected route
-        // navigate(`/${routeSelection}`, {
-        //   state: { extractedData: response.data.extractedData },
-        // });
+        navigate(`/${routeSelection}`, {
+          state: { extractedData: response.data.extractedData },
+        });
       }
     } catch (error) {
       console.error(error);
