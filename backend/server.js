@@ -35,6 +35,7 @@ const upload = multer({
   limits: { fileSize: 8 * 1024 * 1024 }, // 8 MB limit
 });
 
+
 app.get("/", (req, res) => {
   res.send("PDF-Parser Server is running. Welcome!");
 });
@@ -81,7 +82,7 @@ app.get("/extract-pdf-content", async (req, res) => {
 
     const data = await pdfParse(uploadedFile);
 
-    const extractedData = RoundTripExtractFields(data.text);
+    const extractedData = OneWayExtractFields(data.text);
 
     res.status(200).json({ success: true, extractedData });
   } catch (error) {
