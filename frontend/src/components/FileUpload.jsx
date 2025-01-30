@@ -41,7 +41,7 @@ export default function FileUploadComponent() {
 
     if (!file) {
       setAlertMessage({
-        category: "error", // Red background for error
+        category: "error", 
         title: "Error",
         description: "Please select a file.",
       });
@@ -50,7 +50,7 @@ export default function FileUploadComponent() {
 
     if (file.type !== "application/pdf") {
       setAlertMessage({
-        category: "error", // Red background for error
+        category: "error", 
         title: "Error",
         description: "Only PDF files are allowed.",
       });
@@ -90,7 +90,13 @@ export default function FileUploadComponent() {
 
   const getExtractedPdfContent = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/extract-pdf-content`);
+      // const response = await axios.get(`${backendUrl}/extract-pdf-content`);
+       const endpoint =
+         routeSelection === "one-way"
+           ? `${backendUrl}/extract-one-way-pdf-details`
+           : `${backendUrl}/extract-two-way-pdf-details`;
+
+       const response = await axios.get(endpoint);
 
       console.log(response.data);
 
