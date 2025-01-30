@@ -15,3 +15,15 @@
   opacity: 0.05;
   z-index: -1;
 }
+
+/* Ensure text wraps in table cells */
+table td input {
+  white-space: normal;
+  word-wrap: break-word;
+  max-width: 200px; /* Adjust as needed */
+}
+
+/* Prevent horizontal scrolling */
+.table-container {
+  overflow-x: hidden;
+}

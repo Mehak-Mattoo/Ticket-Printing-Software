@@ -1,55 +1,55 @@
 // src/helper/constants.js
 
 // Import all airline logos
-import airArabiaLogo from "../assets/airline/Air Arabia.png";
-import airIndiaLogo from "../assets/airline/Air India.png";
-import airIndiaExpressLogo from "../assets/airline/air-india-express.png";
-import air1airLogo from "../assets/airline/air1air.jpg";
-import airAsiaLogo from "../assets/airline/AirAsia.png";
-import akasaAirLogo from "../assets/airline/Akasa_Air.png";
-import asaJetLogo from "../assets/airline/Asa Jet.png";
-import ataAirlineLogo from "../assets/airline/Ata Airline.png";
-import avaAirlineLogo from "../assets/airline/Ava Airline.png";
-import caspianLogo from "../assets/airline/Caspian.JPG";
-import chabaharAirlinesLogo from "../assets/airline/Chabahar Airlines.jpg";
-import emiratesLogo from "../assets/airline/Emirates.png";
-import ethadAirwaysLogo from "../assets/airline/Ethad Airways.jpg";
-import flyPersiaLogo from "../assets/airline/Fly Persia.png";
-import flyBaghdadLogo from "../assets/airline/FlyBaghdad.jpg";
-import flydubaiLogo from "../assets/airline/Flydubai.jpg";
-import goFirstLogo from "../assets/airline/Go first.png";
-import gulfAirLogo from "../assets/airline/Gulf Air.jpg";
-import indiGoLogo from "../assets/airline/IndiGo.png";
-import iranAirLogo from "../assets/airline/Iran Air.jpg";
-import iranAirtourLogo from "../assets/airline/Iran Airtour.png";
-import iranAsemanAirlinesLogo from "../assets/airline/Iran Aseman Airlines.jpg";
-import iraqiAirwaysLogo from "../assets/airline/Iraqi airways.png";
-import jazeeraLogo from "../assets/airline/Jazeera.png";
-import karunLogo from "../assets/airline/Karun.png";
-import kishAirLogo from "../assets/airline/Kish Air.jpg";
-import kuwaitAirwaysLogo from "../assets/airline/Kuwait_Airways.png";
-import lufthansaLogo from "../assets/airline/Lufthansa.png";
-import mahanAirLogo from "../assets/airline/Mahan-Air.jpeg";
-import merajAirlinesLogo from "../assets/airline/Meraj Airlines.jpg";
-import omanAirLogo from "../assets/airline/Oman Air.jpg";
-import parsairLogo from "../assets/airline/parsair.png";
-import pegasusAirlinesLogo from "../assets/airline/Pegasus Airlines.jpeg";
-import puyaLogo from "../assets/airline/Puya.png";
-import qatarAirwaysLogo from "../assets/airline/qatarairways.jpg";
-import qeshmAirlinesLogo from "../assets/airline/Qeshm Airlines.jpg";
-import sahaAirLogo from "../assets/airline/sahaair.png";
-import salamAirLogo from "../assets/airline/Salam Air.jpg";
-import saudiaLogo from "../assets/airline/Saudia.png";
-import sepehranAirlinesLogo from "../assets/airline/Sepehran Airlines.jpg";
-import skyAirlineLogo from "../assets/airline/SKY Airline.jpg";
-import spiceJetLogo from "../assets/airline/SpiceJet.png";
-import tabanAirLogo from "../assets/airline/Taban Air.png";
-import thaiLogo from "../assets/airline/Thai.png";
-import turkishAirlinesLogo from "../assets/airline/Turkish Airlines.jpg";
-import vareshAirlinesLogo from "../assets/airline/Varesh Airlines.png";
-import vistaraAirlinesLogo from "../assets/airline/vistara airline.jpg";
-import yazdAirlinesLogo from "../assets/airline/Yazd Airline.jpg";
-import zagrosAirlinesLogo from "../assets/airline/Zagros Airlines.png"
+import airArabiaLogo from "../src/assets/airline/Air Arabia.png"
+import airIndiaLogo from "../src/assets/airline/Air India.png";
+import airIndiaExpressLogo from "../src/assets/airline/air-india-express.png";
+import air1airLogo from "../src/assets/airline/air1air.jpg";
+import airAsiaLogo from "../src/assets/airline/AirAsia.png";
+import akasaAirLogo from "../src/assets/airline/Akasa_Air.png";
+import asaJetLogo from "../src/assets/airline/Asa Jet.png";
+import ataAirlineLogo from "../src/assets/airline/Ata Airline.png";
+import avaAirlineLogo from "../src/assets/airline/Ava Airline.png";
+import caspianLogo from "../src/assets/airline/Caspian.JPG";
+import chabaharAirlinesLogo from "../src/assets/airline/Chabahar Airlines.jpg";
+import emiratesLogo from "../src/assets/airline/Emirates.png";
+import ethadAirwaysLogo from "../src/assets/airline/Etihad Airways.jpg";
+import flyPersiaLogo from "../src/assets/airline/Fly Persia.png";
+import flyBaghdadLogo from "../src/assets/airline/FlyBaghdad.jpg";
+import flydubaiLogo from "../src/assets/airline/Flydubai.jpg";
+import goFirstLogo from "../src/assets/airline/Go first.png";
+import gulfAirLogo from "../src/assets/airline/Gulf Air.jpg";
+import indiGoLogo from "../src/assets/airline/IndiGo.png";
+import iranAirLogo from "../src/assets/airline/Iran Air.jpg";
+import iranAirtourLogo from "../src/assets/airline/Iran Airtour.png";
+import iranAsemanAirlinesLogo from "../src/assets/airline/Iran Aseman Airlines.jpg";
+import iraqiAirwaysLogo from "../src/assets/airline/Iraqi airways.png";
+import jazeeraLogo from "../src/assets/airline/Jazeera.png";
+import karunLogo from "../src/assets/airline/Karun.png";
+import kishAirLogo from "../src/assets/airline/Kish Air.jpg";
+import kuwaitAirwaysLogo from "../src/assets/airline/Kuwait_Airways.png";
+import lufthansaLogo from "../src/assets/airline/Lufthansa_.png";
+import mahanAirLogo from "../src/assets/airline/Mahan-Air.jpeg";
+import merajAirlinesLogo from "../src/assets/airline/Meraj Airlines.jpg";
+import omanAirLogo from "../src/assets/airline/Oman Air.jpg";
+import parsairLogo from "../src/assets/airline/parsair.png";
+import pegasusAirlinesLogo from "../src/assets/airline/Pegasus Airlines.jpeg";
+import puyaLogo from "../src/assets/airline/Puya.png";
+import qatarAirwaysLogo from "../src/assets/airline/qatarairways.jpg";
+import qeshmAirlinesLogo from "../src/assets/airline/Qeshm Airlines.jpg";
+import sahaAirLogo from "../src/assets/airline/sahaair.png";
+import salamAirLogo from "../src/assets/airline/Salam Air.jpg";
+import saudiaLogo from "../src/assets/airline/Saudia.png";
+import sepehranAirlinesLogo from "../src/assets/airline/Sepehran Airlines.jpg";
+import skyAirlineLogo from "../src/assets/airline/SKY Airline.jpg";
+import spiceJetLogo from "../src/assets/airline/SpiceJet.png";
+import tabanAirLogo from "../src/assets/airline/Taban Air.png";
+import thaiLogo from "../src/assets/airline/Thai.png";
+import turkishAirlinesLogo from "../src/assets/airline/Turkish Airlines.jpg";
+import vareshAirlinesLogo from "../src/assets/airline/Varesh Airlines.png";
+import vistaraAirlinesLogo from "../src/assets/airline/vistara airline.jpg";
+import yazdAirlinesLogo from "../src/assets/airline/Yazd Airline.png";
+import zagrosAirlinesLogo from "../src/assets/airline/Zagros Airlines.png";
 // Mapping object for airline logos
 export const airlineLogos = {
   "Air Arabia": airArabiaLogo,
@@ -80,7 +80,7 @@ export const airlineLogos = {
   "Kish Air": kishAirLogo,
   "Kuwait Airways": kuwaitAirwaysLogo,
   "Lufthansa": lufthansaLogo,
-  "Mahan Air": mahanAirLogo,
+  "Mahan Airlines": mahanAirLogo,
   "Meraj Airlines": merajAirlinesLogo,
   "Oman Air": omanAirLogo,
   "Parsair": parsairLogo,
