@@ -35,7 +35,6 @@ const upload = multer({
   limits: { fileSize: 8 * 1024 * 1024 }, // 8 MB limit
 });
 
-
 app.get("/", (req, res) => {
   res.send("PDF-Parser Server is running. Welcome!");
 });
@@ -95,7 +94,6 @@ app.get("/extract-one-way-pdf-details", async (req, res) => {
   }
 });
 
-
 app.get("/extract-two-way-pdf-details", async (req, res) => {
   try {
     if (!uploadedFile) {
@@ -106,7 +104,7 @@ app.get("/extract-two-way-pdf-details", async (req, res) => {
 
     const data = await pdfParse(uploadedFile);
 
-    const extractedData = OneWayExtractFields(data.text);
+    const extractedData = RoundTripExtractFields(data.text);
 
     res.status(200).json({ success: true, extractedData });
   } catch (error) {
@@ -124,28 +122,28 @@ function OneWayExtractFields(text) {
   const nameMatch = text.match(
     /(?:Passenger’s Name|Traveller)\s+([A-Z][A-Z\s]*)\n/
   );
-  const name = nameMatch ? nameMatch[1].trim() : "Not found";
+  const name = nameMatch ? nameMatch[1].trim() : null;
 
   // Passport Number
   const passportMatch = text.match(/Passport Number\s+([A-Z0-9]+)/);
-  const passportNumber = passportMatch ? passportMatch[1] : "Not found";
+  const passportNumber = passportMatch ? passportMatch[1] : null;
 
   const dobMatch = text.match(
     /\b(?:DOB|Date of Birth):?\s*(\d{2}[-/]\d{2}[-/]\d{4})\b/
   );
-  const dob = dobMatch ? dobMatch[1].trim() : "Not found";
+  const dob = dobMatch ? dobMatch[1].trim() : null;
 
   // Airline Name
   const airlineMatches = text.match(/Airline\s*:\s*([^\n]+)/);
-  const airlineName = airlineMatches ? airlineMatches[1].trim() : "Not found";
+  const airlineName = airlineMatches ? airlineMatches[1].trim() : null;
 
   // Flight Number
   const flightNumberMatch = text.match(/Flight (?:Number|No):\s+(\w+\d+)/);
-  const flightNumber = flightNumberMatch ? flightNumberMatch[1] : "Not found";
+  const flightNumber = flightNumberMatch ? flightNumberMatch[1] : null;
 
   // Cabin
   const cabinMatch = text.match(/Cabin Class:\s+([A-Za-z]+)/);
-  const cabin = cabinMatch ? cabinMatch[1] : "Not found";
+  const cabin = cabinMatch ? cabinMatch[1] : null;
 
   // Stops
   const stopsMatch = text.match(/Stop:.*?(\d+H \d+M)/);
@@ -153,29 +151,31 @@ function OneWayExtractFields(text) {
 
   // Airline PNR
   const pnrMatch = text.match(/Airline reservation code \(PNR\):\s+(\w+)/);
-  const pnr = pnrMatch ? pnrMatch[1] : "Not found";
+  const pnr = pnrMatch ? pnrMatch[1] : null;
 
   // E-ticket Number
   const ticketMatch = text.match(/Ticket Number:\s+(\d+)/);
-  const eTicket = ticketMatch ? ticketMatch[1] : "Not found";
+  const eTicket = ticketMatch ? ticketMatch[1] : null;
 
-  // Extract Origin Airport Name
-  const originAirportMatch = text.match(/Origin\s+([\w\s()]+)\n/);
+  const originAirportMatch = text.match(
+    /(?:Origin|Arrive):?\s*([\w\s]+)\s*\(([^)]+)\)/i
+  );
   const originAirport = originAirportMatch
     ? originAirportMatch[1].trim()
-    : "Not found";
+    : null;
 
-  // Extract Origin City and Country
-  const originCityCountryMatch = text.match(/Origin\s+[\w\s()]+\n(.+)\n/);
-  const originCityCountry = originCityCountryMatch
-    ? originCityCountryMatch[1].trim()
-    : "Not found";
+  const originCityCountry = originAirportMatch
+    ? originAirportMatch[2].trim()
+    : null;
 
   // Extract Destination Airport Name
-  const destinationAirportMatch = text.match(/Destination\s+([\w\s()]+)\n/);
+
+  const destinationAirportMatch = text.match(
+    /(?:Destination|Depart):?\s*([\w\s]+)\s*\(([^)]+)\)/i
+  );
   const destinationAirport = destinationAirportMatch
     ? destinationAirportMatch[1].trim()
-    : "Not found";
+    : null;
 
   // Extract Destination City and Country
   const destinationCityCountryMatch = text.match(
@@ -183,40 +183,40 @@ function OneWayExtractFields(text) {
   );
   const destinationCityCountry = destinationCityCountryMatch
     ? destinationCityCountryMatch[1].trim()
-    : "Not found";
+    : null;
 
   // Date
   const dateMatch = text.match(/\b\d{2} [A-Za-z]+ \d{4}\b/);
-  const date = dateMatch ? dateMatch[0] : "Not found";
+  const date = dateMatch ? dateMatch[0] : null;
 
   // Time
   const timeMatch = text.match(/\b\d{2}:\d{2}\b/);
-  const time = timeMatch ? timeMatch[0] : "Not found";
+  const time = timeMatch ? timeMatch[0] : null;
 
   // Baggage
 
   const baggageMatch = text.match(/Checked-in baggage\s+(\d+\s?Kg)/i);
-  const baggage = baggageMatch ? baggageMatch[1].trim() : "Not found";
+  const baggage = baggageMatch ? baggageMatch[1].trim() : null;
 
   // Departure Terminal (if mentioned)
   const terminalMatch = text.match(/Departure Terminal:\s+(\w+)/);
-  const terminal = terminalMatch ? terminalMatch[1] : "Not found";
+  const terminal = terminalMatch ? terminalMatch[1] : null;
 
   // Base Price- not present in input file
   const basePriceMatch = text.match(/Adult Base Price:\s+(\d+\.?\d*)/);
-  const basePrice = basePriceMatch ? basePriceMatch[1] : "Not found";
+  const basePrice = basePriceMatch ? basePriceMatch[1] : null;
 
   // Airport Tax
   const airportTaxMatch = text.match(/Adult Airport Tax:\s+(\d+\.?\d*)/);
-  const airportTax = airportTaxMatch ? airportTaxMatch[1] : "Not found";
+  const airportTax = airportTaxMatch ? airportTaxMatch[1] : null;
 
   // Service Tax
   const serviceTaxMatch = text.match(/Adult Service Tax:\s+(\d+\.?\d*)/);
-  const serviceTax = serviceTaxMatch ? serviceTaxMatch[1] : "Not found";
+  const serviceTax = serviceTaxMatch ? serviceTaxMatch[1] : null;
 
   // Total Price
   const totalPriceMatch = text.match(/Adult Total Price:\s+(\d+\.?\d*)/);
-  const totalPrice = totalPriceMatch ? totalPriceMatch[1] : "Not found";
+  const totalPrice = totalPriceMatch ? totalPriceMatch[1] : null;
 
   return {
     name,
@@ -245,72 +245,101 @@ function OneWayExtractFields(text) {
 
 function RoundTripExtractFields(text) {
   console.log(text);
-  
+
+  // Normalize the text for easier regex matching
+  const normalizedText = text
+    .replace(/\s+/g, " ") // Replace multiple spaces and line breaks with a single space
+    .replace(/\n/g, " ") // Remove newline characters
+    .replace(/\s{2,}/g, " "); // Replace multiple spaces with a single space
+
   // Passenger or Traveler Names
   const nameMatches = [
-    ...text.matchAll(
-      /(?:Passenger’s Name|Traveler|Traveller|Traveler):?\s*([A-Z\s]+)(?=\n|$)/g
+    ...normalizedText.matchAll(
+      /(?:Passenger’s Name|Traveler|Traveller|Traveler):?\s*([A-Z\s]+)(?=\s|$)/g
     ),
   ];
   const names = nameMatches.map((match) => match[1].trim());
 
   // Passport Numbers
-  const passportMatches = [...text.matchAll(/Passport Number\s*([A-Z0-9]+)/g)];
+  const passportMatches = [
+    ...normalizedText.matchAll(/Passport Number\s*([A-Z0-9]+)/g),
+  ];
   const passportNumbers = passportMatches.map((match) => match[1]);
 
   // Flight Numbers
-  const flightNumberMatches = [...text.matchAll(/Flight No\s+(\d+)/g)];
+  const flightNumberMatches = [
+    ...normalizedText.matchAll(/Flight\s+Details\s+(\d+)/g),
+  ];
   const flightNumbers = flightNumberMatches.map((match) => match[1]);
 
-  // Airline Names
-  const airlineMatches = [...text.matchAll(/Airline:\s*([A-Za-z\s]+)/g)];
-  const airlines = airlineMatches.map((match) => match[1].trim());
+  // Airline Code and Name
+  const airlineMatches = [
+    ...normalizedText.matchAll(/(\w{2})\s?\(([^)]+)\)\s/g),
+  ];
+  const airlines = airlineMatches.map((match) => ({
+    code: match[1].trim(),
+    name: match[2].trim(),
+  }));
 
   // Airline PNRs
-const pnrMatches = [...text.matchAll(/Airline PNR:\s*(\d+)-?/g)];
-const airlinePnrs = pnrMatches.map((match) => match[1]);
-
+  const pnrMatches = [...normalizedText.matchAll(/Airline PNR:\s*(\d+)-?/g)];
+  const airlinePnrs = pnrMatches.map((match) => match[1]);
 
   // Cabin Classes
-  const cabinMatches = [...text.matchAll(/Cabin\/Class\s*([A-Za-z]+)/g)];
+  const cabinMatches = [
+    ...normalizedText.matchAll(/Cabin\/Class\s*([A-Za-z]+)/g),
+  ];
   const cabins = cabinMatches.map((match) => match[1]);
 
   // Baggage Allowance
-  const baggageMatches = [...text.matchAll(/Baggage\s+(\d+\s?KG)/g)];
+  const baggageMatches = [...normalizedText.matchAll(/Baggage\s+(\d+\s?KG)/g)];
   const baggageAllowances = baggageMatches.map((match) => match[1]);
 
   // Origin and Destination
-  const originMatches = [...text.matchAll(/Depart\s+(.+)\nDate/g)];
+  const originMatches = [...normalizedText.matchAll(/Depart\s+(.+?)\s+Date/g)];
   const origins = originMatches.map((match) => match[1].trim());
 
-  const destinationMatches = [...text.matchAll(/Arrive\s+(.+)\nDate/g)];
+  const destinationMatches = [
+    ...normalizedText.matchAll(/Arrive\s+(.+?)\s+Date/g),
+  ];
   const destinations = destinationMatches.map((match) => match[1].trim());
 
   // Dates
-  const dateMatches = [...text.matchAll(/\b\d{2} [A-Za-z]+ \d{4}\b/g)];
-  const dates = dateMatches.map((match) => match[0]);
+  const dateMatches = [
+    ...normalizedText.matchAll(/\bDate\s+(\d{2})\s+([A-Za-z]+)\s+(\d{4})\b/g),
+  ];
+  const dates = dateMatches.map(
+    (match) => `${match[1]} ${match[2]} ${match[3]}`
+  );
 
   // Times
-  const timeMatches = [...text.matchAll(/\b\d{2}:\d{2}\b/g)];
+  const timeMatches = [...normalizedText.matchAll(/\b\d{2}:\d{2}\b/g)];
   const times = timeMatches.map((match) => match[0]);
 
   // Price Details
-
-    const basePriceMatch = text.match(/Adult Base Price:\s*([\d,]+)/);
+  const basePriceMatch = normalizedText.match(
+    /Adult Base Price:\s*([\d,]+)\s*\(x\s1\)/
+  );
   const basePrice = basePriceMatch ? basePriceMatch[1] : "Not found";
 
-  const airportTaxMatch = text.match(/Adult Airport Tax:\s*([\d,]+)/i);
+  const airportTaxMatch = normalizedText.match(
+    /Adult Airport Tax:\s*([\d,]+)\s*\(x\s1\)/
+  );
   const airportTax = airportTaxMatch ? airportTaxMatch[1] : "Not found";
 
-  const serviceTaxMatch = text.match(/Adult Service Tax:\s*([\d,]+)/i);
+  const serviceTaxMatch = normalizedText.match(
+    /Adult Service Tax:\s*([\d,]+)\s*\(x\s1\)/
+  );
   const serviceTax = serviceTaxMatch ? serviceTaxMatch[1] : "Not found";
 
-  const totalPriceMatch = text.match(/Adult Total Price:\s*([\d,]+)/i);
+  const totalPriceMatch = normalizedText.match(
+    /Adult Total Price:\s*([\d,]+)\s*\(x\s1\)/
+  );
   const totalPrice = totalPriceMatch ? totalPriceMatch[1] : "Not found";
 
   return {
     names,
-     passportNumbers,
+    passportNumbers,
     flightNumbers,
     airlines,
     airlinePnrs,

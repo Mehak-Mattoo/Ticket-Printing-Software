@@ -46,31 +46,35 @@ const OneWayTicket = () => {
       // Update passenger state
       setPassenger({
         name: extractedData.name || "",
-        passportNum: extractedData.passportNumber || "",
-        DOB: extractedData.dob || "",
-        status: extractedData.status || "",
+        passportNum: extractedData.passportNumber || "0",
+        DOB: extractedData.dob || "0",
+        status: extractedData.status || "Confirmed",
       });
 
       // Update flight state
       setFlight({
-        airline: extractedData.airlineName || "",
-        flightNum: extractedData.flightNumber || "",
-        cabin: extractedData.cabin || "",
-        stop: extractedData.stops || "",
-        airlinePNR: extractedData.pnr || "",
-        eTicketNum: extractedData.eTicket || "",
+        airline: extractedData.airlineName || "Mahan Air",
+        flightNum: extractedData.flightNumber || "0",
+        cabin: extractedData.cabin || "Economy",
+        stop: extractedData.stops || "0",
+        airlinePNR: extractedData.pnr || "0",
+        eTicketNum: extractedData.eTicket || "0",
         origin:
           extractedData.originAirport +
             ", " +
-            extractedData.originCityCountry || "",
+            extractedData.originCityCountry ||
+          "IMAM KHOMEINI INTL (IKA, Tehran, Iran)",
         destination:
           extractedData.destinationAirport +
             ", " +
-            extractedData.destinationCityCountry || "",
+            extractedData.destinationCityCountry ||
+          "INDIRA GANDHI INTL (DEL, Delhi, India)",
         date: extractedData.date || "",
         time: extractedData.time || "",
-        baggage: extractedData.baggage || "",
-        departureTerminal: extractedData.originAirport || "",
+        baggage: extractedData.baggage || "30 kg",
+        departureTerminal:
+          extractedData.originAirport ||
+          "IMAM KHOMEINI INTL (IKA, Tehran, Iran)",
       });
 
       // Update price state
@@ -107,19 +111,17 @@ const OneWayTicket = () => {
     }));
   };
 
-  const handleBack = () => {
-    window.history.back(); // Navigate back to the previous page
-  };
-
   return (
     <>
       <div>
         {/* Back Button */}
-        <div className="p-4 flex justify-between items-center bg-gray-50 rounded-lg shadow-sm">
+        <div className="p-2 flex justify-between items-center bg-gray-50 rounded-lg shadow-sm">
           <PrimaryBtn
             bgColor="bg-gray-500 hover:bg-gray-600"
-            onClick={handleBack}
-            className="px-6 py-2 rounded-lg text-white font-semibold shadow-md transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+            onClick={() => {
+              window.history.back(); // Navigate back to the previous page
+            }}
+            className="btn-to-hide px-6 py-2 rounded-lg text-white font-semibold shadow-md transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
           >
             Back
           </PrimaryBtn>
@@ -129,7 +131,7 @@ const OneWayTicket = () => {
             onClick={() => {
               window.print();
             }}
-            className="px-6 py-2 rounded-lg text-white font-semibold shadow-md transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+            className="btn-to-hide px-6 py-2 rounded-lg text-white font-semibold shadow-md transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
           >
             Download
           </PrimaryBtn>
@@ -140,9 +142,9 @@ const OneWayTicket = () => {
           <img className="w-1/6 ml-5" src={logo} alt="smh-agency" />
 
           {/* 1st table */}
-          <div className="mx-3 text-sm">
-            <h2 className="bg-skyBlue font-bold">PASSENGER DETAILS</h2>
-            <div className="overflow-x-auto">
+          <div className="mx-3 text-xs">
+            <h2 className="colored bg-skyBlue  font-bold">PASSENGER DETAILS</h2>
+            <div className="">
               <table className="table-auto border-2 my-3 border-cyan-500 border-3 w-full mr-8">
                 <thead className="">
                   <tr className="">
@@ -160,7 +162,7 @@ const OneWayTicket = () => {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-[#cef1f9] text-center align-middle font-semibold">
+                <tbody className="colored bg-skyBlue text-center align-middle font-semibold">
                   <tr className="">
                     <td className="border border-cyan-500 px-4 py-2">
                       <input
@@ -193,7 +195,7 @@ const OneWayTicket = () => {
                       <input
                         type="text"
                         name="status"
-                        value={passenger.status}
+                        value={passenger.status || "Confirmed"}
                         onChange={handlePassengerChange}
                         className="w-full text-center bg-transparent"
                       />
@@ -205,8 +207,8 @@ const OneWayTicket = () => {
           </div>
 
           {/* 2nd table */}
-          <div className="mx-3 text-sm">
-            <h2 className="bg-skyBlue font-bold">AGENT DETAILS</h2>
+          <div className="mx-3 text-xs">
+            <h2 className="bg-skyBlue colored font-bold">AGENT DETAILS</h2>
             <div className="overflow-x-auto">
               <table className="table-auto border-2 my-3 border-cyan-500 border-3 w-full">
                 <thead>
@@ -223,7 +225,7 @@ const OneWayTicket = () => {
                     <th className="border border-cyan-500 px-4 py-2">E-mail</th>
                   </tr>
                 </thead>
-                <tbody className="bg-[#cef1f9] text-center align-middle border border-borderBlue">
+                <tbody className="bg-[#cef1f9] colored text-center align-middle border border-borderBlue">
                   <tr className="">
                     <td className="font-bold border border-cyan-500 px-4 py-2">
                       SMH Travel Agency
@@ -246,16 +248,19 @@ const OneWayTicket = () => {
           <div className="img-bg">
             {/* 3rd table- 1st part */}
             {/* 3rd table- 2nd part */}
-            <div className="mx-3 text-sm">
-              <h2 className="bg-skyBlue font-bold">FLIGHT DETAILS</h2>
+            <div className="mx-3 text-xs">
+              <h2 className="bg-skyBlue colored font-bold">FLIGHT DETAILS</h2>
               <div className="flex">
-                {flight.airline && airlineLogos[flight.airline] && (
-                  <img
-                    src={airlineLogos[flight.airline]}
-                    alt={`${flight.airline} Logo`}
-                    className="w-24 h-24 mr-4 mt-4"
-                  />
-                )}
+                <div>
+                  {flight.airline && airlineLogos[flight.airline] && (
+                    <img
+                      src={airlineLogos[flight.airline]}
+                      alt={`${flight.airline} Logo`}
+                      className="w-20 mt-10 "
+                    />
+                  )}
+                </div>
+
                 <table className="table-auto border-2 my-3 border-cyan-500 border-3 w-full">
                   <thead>
                     <tr className="border">
@@ -279,7 +284,7 @@ const OneWayTicket = () => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-[#cef1f9] text-center align-middle border border-borderBlue">
+                  <tbody className="bg-[#cef1f9] colored text-center align-middle border border-borderBlue">
                     <tr className="">
                       <td className="border border-cyan-500 px-4 py-2 whitespace-normal">
                         <input
@@ -361,7 +366,7 @@ const OneWayTicket = () => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-bgBlue text-center align-middle border border-borderBlue">
+                  <tbody className="bg-bgBlue colored text-center align-middle border border-borderBlue">
                     <tr className="">
                       <td className="border border-cyan-500 px-4 py-2 whitespace-normal">
                         <input
@@ -425,8 +430,8 @@ const OneWayTicket = () => {
 
             {/* 4 table */}
 
-            <div className="mx-3 text-sm">
-              <h2 className="bg-skyBlue font-bold">PRICE DETAILS</h2>
+            <div className="mx-3 text-xs">
+              <h2 className="bg-skyBlue  colored font-bold">PRICE DETAILS</h2>
 
               <div className="border border-cyan-500 border-3 max-w-md my-3">
                 <div className="flex justify-between border-b text-center border-cyan-500">
@@ -441,7 +446,7 @@ const OneWayTicket = () => {
                     />
                   </div>
                 </div>
-                <div className="flex justify-between border-b text-center border-cyan-500 bg-bgBlue">
+                <div className="flex colored justify-between border-b text-center border-cyan-500 bg-bgBlue">
                   <div className="font-semibold w-1/2">Airport Tax</div>
                   <div className="font-bold w-1/2 border-cyan-500 border-l-2">
                     <input
@@ -465,7 +470,7 @@ const OneWayTicket = () => {
                     />
                   </div>
                 </div>
-                <div className="flex justify-between text-center bg-bgBlue">
+                <div className="flex colored justify-between text-center bg-bgBlue">
                   <div className="font-semibold w-1/2">Total Price</div>
                   <div className="font-bold w-1/2 border-cyan-500 border-l-2">
                     <input

@@ -90,7 +90,7 @@ export default function FileUploadComponent() {
 
   const getExtractedPdfContent = async () => {
     try {
-      // const response = await axios.get(`${backendUrl}/extract-pdf-content`);
+ 
        const endpoint =
          routeSelection === "one-way"
            ? `${backendUrl}/extract-one-way-pdf-details`
@@ -117,11 +117,11 @@ export default function FileUploadComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-green-100 to-blue-50 flex flex-col items-center justify-center p-6">
+    <div className=" bg-gradient-to-r h-screen from-green-100 to-blue-50 flex flex-col items-center justify-center p-6">
       {/* Main Container */}
-      <div className="bg-white rounded-2xl shadow-lg p-8 max-w-2xl w-full text-center transform transition-all duration-300 hover:shadow-xl">
+      <div className="bg-white h-fit rounded-2xl shadow-lg p-6 max-w-2xl w-full text-center transform transition-all duration-300 hover:shadow-xl">
         {/* Heading */}
-        <h2 className="font-sans font-bold text-4xl md:text-5xl lg:text-6xl text-gray-900 mb-6">
+        <h2 className="font-sans font-bold text-4xl md:text-4xl lg:text-5xl text-gray-900 mb-2">
           Effortlessly{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-500">
             Extract Data
@@ -130,7 +130,7 @@ export default function FileUploadComponent() {
         </h2>
 
         {/* Subheading */}
-        <p className="text-gray-600 text-lg mb-8">
+        <p className="text-gray-500 mb-5">
           Upload your PDF and let us handle the rest. Fast, secure, and easy!
         </p>
 

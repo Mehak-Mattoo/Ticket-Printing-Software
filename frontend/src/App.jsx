@@ -5,6 +5,7 @@ import FileUpload from "./components/FileUpload";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import OneWayTicket from "./components/OneWayTicket";
 import TwoWayTicket from "./components/TwoWayTicket";
+import Testing from "./components/Testing";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route exact path="/" element={<FileUpload />} />
           <Route exact path="/one-way" element={<OneWayTicket />} />
           <Route exact path="/two-way" element={<TwoWayTicket />} />
+         
         </Routes>
       </Router>
     </>

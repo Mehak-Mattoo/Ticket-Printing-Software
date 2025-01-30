@@ -27,3 +27,18 @@ table td input {
 .table-container {
   overflow-x: hidden;
 }
+
+ @media print {
+    /* Hide the specific button or element during printing */
+    .btn-to-hide {
+      display: none;
+    }
+  }
+
+  @media print {
+  .colored {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background-color: #c0f2fd !important;
+  }
+}
