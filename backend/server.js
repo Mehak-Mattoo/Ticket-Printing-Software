@@ -36,7 +36,7 @@ const upload = multer({
   limits: { fileSize: 8 * 1024 * 1024 }, // 8 MB limit
 });
 
-app.get("/", (req, res) => {
+app.get("/api/", (req, res) => {
   res.send("PDF-Parser Server is running. Welcome!");
 });
 
@@ -48,7 +48,7 @@ if (!fs.existsSync(tempDirectory)) {
 
 let uploadedFile = null;
 // Upload PDF and parse its content
-app.post("/upload-pdf", upload.single("pdf"), async (req, res) => {
+app.post("/api/upload-pdf", upload.single("pdf"), async (req, res) => {
   try {
     console.log("File received:", req.file);
     if (!req.file) {
@@ -72,7 +72,7 @@ app.post("/upload-pdf", upload.single("pdf"), async (req, res) => {
   }
 });
 
-app.get("/extract-one-way-pdf-details", async (req, res) => {
+app.get("/api/extract-one-way-pdf-details", async (req, res) => {
   try {
     if (!uploadedFile) {
       return res
@@ -95,7 +95,7 @@ app.get("/extract-one-way-pdf-details", async (req, res) => {
   }
 });
 
-app.get("/extract-two-way-pdf-details", async (req, res) => {
+app.get("/api/extract-two-way-pdf-details", async (req, res) => {
   try {
     if (!uploadedFile) {
       return res
