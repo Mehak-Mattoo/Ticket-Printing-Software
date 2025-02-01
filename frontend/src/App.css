@@ -33,6 +33,13 @@ table td input {
     .btn-to-hide {
       display: none;
     }
+     @page {
+    margin: 0.3; /* Removes margins where headers/footers appear */
+  }
+   body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
   }
 
   @media print {

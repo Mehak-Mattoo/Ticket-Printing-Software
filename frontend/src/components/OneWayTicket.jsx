@@ -142,29 +142,27 @@ const OneWayTicket = () => {
           <img className="w-1/6 ml-5" src={logo} alt="smh-agency" />
 
           {/* 1st table */}
-          <div className="mx-3 text-xs">
+          <div className="mx-1 text-xs">
             <h2 className="colored bg-skyBlue  font-bold">PASSENGER DETAILS</h2>
             <div className="">
               <table className="table-auto border-2 my-3 border-cyan-500 border-3 w-full mr-8">
                 <thead className="">
                   <tr className="">
-                    <th className="border border-cyan-500 border-3 px-4 py-2">
+                    <th className="border border-cyan-500 border-3 ">
                       Passenger's name
                     </th>
-                    <th className="border border-cyan-500 border-3 px-4 py-2">
+                    <th className="border border-cyan-500 border-3 ">
                       Passport No.
                     </th>
-                    <th className="border border-cyan-500 border-3 px-4 py-2">
+                    <th className="border border-cyan-500 border-3 ">
                       Date of Birth
                     </th>
-                    <th className="border border-cyan-500 border-3 px-4 py-2">
-                      Status
-                    </th>
+                    <th className="border border-cyan-500 border-3 ">Status</th>
                   </tr>
                 </thead>
-                <tbody className="colored bg-skyBlue text-center align-middle font-semibold">
+                <tbody className="colored bg-skyBlue text-center align-middle ">
                   <tr className="">
-                    <td className="border border-cyan-500 px-4 py-2">
+                    <td className="border border-cyan-500 ">
                       <input
                         type="text"
                         name="name"
@@ -173,7 +171,7 @@ const OneWayTicket = () => {
                         className="w-full text-center bg-transparent"
                       />
                     </td>
-                    <td className="border border-cyan-500 px-4 py-2">
+                    <td className="border border-cyan-500 ">
                       <input
                         type="text"
                         name="passportNum"
@@ -182,7 +180,7 @@ const OneWayTicket = () => {
                         className="w-full text-center bg-transparent"
                       />
                     </td>
-                    <td className="border border-cyan-500 px-4 py-2">
+                    <td className="border border-cyan-500 ">
                       <input
                         type="text"
                         name="DOB"
@@ -191,7 +189,7 @@ const OneWayTicket = () => {
                         className="w-full text-center bg-transparent"
                       />
                     </td>
-                    <td className="border border-cyan-500 px-4 py-2">
+                    <td className="border border-cyan-500 py-2">
                       <input
                         type="text"
                         name="status"
@@ -207,37 +205,31 @@ const OneWayTicket = () => {
           </div>
 
           {/* 2nd table */}
-          <div className="mx-3 text-xs">
+          <div className="mx-1 text-xs">
             <h2 className="bg-skyBlue colored font-bold">AGENT DETAILS</h2>
             <div className="overflow-x-auto">
               <table className="table-auto border-2 my-3 border-cyan-500 border-3 w-full">
                 <thead>
                   <tr className="border">
-                    <th className="border border-cyan-500 px-4 py-2">
-                      Agent's Details
-                    </th>
-                    <th className="border border-cyan-500 px-4 py-2">
-                      Support No.
-                    </th>
-                    <th className="border border-cyan-500 px-4 py-2">
-                      Phone No.
-                    </th>
-                    <th className="border border-cyan-500 px-4 py-2">E-mail</th>
+                    <th className="border border-cyan-500 ">Agent's Details</th>
+                    <th className="border border-cyan-500 ">Support No.</th>
+                    <th className="border border-cyan-500 ">Phone No.</th>
+                    <th className="border border-cyan-500 ">E-mail</th>
                   </tr>
                 </thead>
                 <tbody className="bg-[#cef1f9] colored text-center align-middle border border-borderBlue">
                   <tr className="">
-                    <td className="font-bold border border-cyan-500 px-4 py-2">
+                    <td className="font-bold border border-cyan-500 ">
                       SMH Travel Agency
                     </td>
 
-                    <td className="border border-cyan-500 px-4 py-2 font-bold">
+                    <td className="border border-cyan-500  font-bold py-2">
                       +989370291702
                     </td>
-                    <td className="border border-cyan-500 px-4 py-2 font-bold">
+                    <td className="border border-cyan-500  font-bold">
                       +91904544484
                     </td>
-                    <td className="font-bold border border-cyan-500 px-4 py-2">
+                    <td className="font-bold border border-cyan-500 ">
                       @smhtravelagency@gmail.com
                     </td>
                   </tr>
@@ -248,7 +240,7 @@ const OneWayTicket = () => {
           <div className="img-bg">
             {/* 3rd table- 1st part */}
             {/* 3rd table- 2nd part */}
-            <div className="mx-3 text-xs">
+            <div className="mx-1 text-xs">
               <h2 className="bg-skyBlue colored font-bold">FLIGHT DETAILS</h2>
               <div className="flex">
                 <div>
@@ -256,37 +248,37 @@ const OneWayTicket = () => {
                     <img
                       src={airlineLogos[flight.airline]}
                       alt={`${flight.airline} Logo`}
-                      className="w-20 mt-10 "
+                      className="w-16 mt-10 "
                     />
                   )}
                 </div>
 
                 <table className="table-auto border-2 my-3 border-cyan-500 border-3 w-full">
                   <thead>
-                    <tr className="border">
-                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                    <tr className="border w-full">
+                      <th className="font-bold border border-cyan-500 ">
                         Airline
                       </th>
-                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                      <th className="font-bold border border-cyan-500 ">
                         Flight No./Aircraft Type
                       </th>
-                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                      <th className="font-bold border border-cyan-500 ">
                         Cabin
                       </th>
-                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                      <th className="font-bold border border-cyan-500 ">
                         Stop
                       </th>
-                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                      <th className="font-bold border border-cyan-500 ">
                         Airline PNR
                       </th>
-                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                      <th className="font-bold border  border-cyan-500 ">
                         E-Ticket Number
                       </th>
                     </tr>
                   </thead>
                   <tbody className="bg-[#cef1f9] colored text-center align-middle border border-borderBlue">
                     <tr className="">
-                      <td className="border border-cyan-500 px-4 py-2 whitespace-normal">
+                      <td className="border border-cyan-500  whitespace-normal">
                         <input
                           type="text"
                           name="airline"
@@ -295,7 +287,7 @@ const OneWayTicket = () => {
                           className="w-full text-center bg-transparent"
                         />
                       </td>
-                      <td className="border border-cyan-500 px-4 py-2 whitespace-normal">
+                      <td className="border  border-cyan-500  whitespace-normal py-2">
                         <input
                           type="text"
                           name="flightNum"
@@ -304,7 +296,7 @@ const OneWayTicket = () => {
                           className="w-full text-center bg-transparent"
                         />
                       </td>
-                      <td className="border border-cyan-500 px-4 py-2 whitespace-normal">
+                      <td className="border border-cyan-500  whitespace-normal">
                         <input
                           type="text"
                           name="cabin"
@@ -313,7 +305,7 @@ const OneWayTicket = () => {
                           className="w-full text-center bg-transparent"
                         />
                       </td>
-                      <td className="border border-cyan-500 px-4 py-2 whitespace-normal">
+                      <td className="border border-cyan-500  whitespace-normal">
                         <input
                           type="text"
                           name="stop"
@@ -322,7 +314,7 @@ const OneWayTicket = () => {
                           className="w-full text-center bg-transparent"
                         />
                       </td>
-                      <td className="border border-cyan-500 px-4 py-2 whitespace-normal">
+                      <td className="border border-cyan-500  whitespace-normal">
                         <input
                           type="text"
                           name="airlinePNR"
@@ -331,7 +323,7 @@ const OneWayTicket = () => {
                           className="w-full text-center bg-transparent"
                         />
                       </td>
-                      <td className="border border-cyan-500 px-4 py-2 whitespace-normal">
+                      <td className="border border-cyan-500  whitespace-normal">
                         <input
                           type="text"
                           name="eTicketNum"
@@ -346,29 +338,29 @@ const OneWayTicket = () => {
                   {/* 3rd table- 2nd part */}
                   <thead>
                     <tr className="border">
-                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                      <th className="font-bold border border-cyan-500 ">
                         Origin
                       </th>
-                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                      <th className="font-bold border border-cyan-500 ">
                         Destination
                       </th>
-                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                      <th className="font-bold border border-cyan-500 ">
                         Date
                       </th>
-                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                      <th className="font-bold border border-cyan-500 ">
                         Time
                       </th>
-                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                      <th className="font-bold border border-cyan-500 ">
                         Baggage
                       </th>
-                      <th className="font-bold border border-cyan-500 px-4 py-2">
+                      <th className="font-bold border border-cyan-500 ">
                         Departure Terminal
                       </th>
                     </tr>
                   </thead>
                   <tbody className="bg-bgBlue colored text-center align-middle border border-borderBlue">
                     <tr className="">
-                      <td className="border border-cyan-500 px-4 py-2 whitespace-normal">
+                      <td className="border  w-[8rem] border-cyan-500  whitespace-normal py-2">
                         <input
                           type="text"
                           name="origin"
@@ -377,16 +369,17 @@ const OneWayTicket = () => {
                           className="w-full text-center bg-transparent"
                         />
                       </td>
-                      <td className="border border-cyan-500 px-4 py-2 whitespace-normal">
+                      <td className="border w-[11rem] border-cyan-500 py-1 whitespace-normal">
                         <input
                           type="text"
                           name="destination"
                           value={flight.destination}
                           onChange={handleFlightChange}
-                          className="w-full text-center bg-transparent"
+                          className="w-full min-w-full text-center bg-transparent"
                         />
                       </td>
-                      <td className="border border-cyan-500 px-4 py-2 whitespace-normal">
+
+                      <td className="border w-[6.3rem] border-cyan-500  whitespace-normal">
                         <input
                           type="text"
                           name="date"
@@ -395,7 +388,7 @@ const OneWayTicket = () => {
                           className="w-full text-center bg-transparent"
                         />
                       </td>
-                      <td className="border border-cyan-500 px-4 py-2 whitespace-normal">
+                      <td className="border border-cyan-500  whitespace-normal">
                         <input
                           type="text"
                           name="time"
@@ -404,7 +397,7 @@ const OneWayTicket = () => {
                           className="w-full text-center bg-transparent"
                         />
                       </td>
-                      <td className="border border-cyan-500 px-4 py-2 whitespace-normal">
+                      <td className="border border-cyan-500  whitespace-normal">
                         <input
                           type="text"
                           name="baggage"
@@ -413,7 +406,7 @@ const OneWayTicket = () => {
                           className="w-full text-center bg-transparent"
                         />
                       </td>
-                      <td className="border border-cyan-500 px-4 py-2 whitespace-normal">
+                      <td className="border border-cyan-500  whitespace-normal">
                         <input
                           type="text"
                           name="departureTerminal"
@@ -430,7 +423,7 @@ const OneWayTicket = () => {
 
             {/* 4 table */}
 
-            <div className="mx-3 text-xs">
+            <div className="mx-1 text-xs">
               <h2 className="bg-skyBlue  colored font-bold">PRICE DETAILS</h2>
 
               <div className="border border-cyan-500 border-3 max-w-md my-3">

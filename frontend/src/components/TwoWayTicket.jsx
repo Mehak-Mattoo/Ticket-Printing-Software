@@ -46,26 +46,26 @@ const TwoWayTicket = () => {
       // Update passenger state
       setPassenger((prevState) => ({
         ...prevState,
-        name: extractedData.names[0] || "", // Get the first name if available
-        passportNum: extractedData.passportNumbers[0] || "", // Get the first passport number
-        DOB: extractedData.dates[0] || "", // Get the first date (assuming DOB is the first date)
+        name: extractedData[0].name || "", // Get the first name if available
+        passportNum: extractedData[0].passportNumber || "", // Get the first passport number
+        DOB: "", // Get the first date (assuming DOB is the first date)
         status: "Confirmed", // Since it's not available in the extracted data, leave it empty or set to a default value
       }));
 
       // Update flight state
       setFlight((prevState) => ({
         ...prevState,
-        airline: extractedData.airlines[0] || "",
-        flightNum: extractedData.flightNumbers[0] || "",
-        cabin: extractedData.cabins[0] || "Economy",
-        stop: extractedData.airlinePnrs.length || 0,
-        airlinePNR: extractedData.airlinePnrs[0] || "",
-        eTicketNum: "",
-        origin: extractedData.origins[0] || "",
-        destination: extractedData.destinations[0] || "",
-        date: extractedData.dates[0] || "",
-        time: extractedData.times[0] || "",
-        baggage: extractedData.baggageAllowances[0] || "30 KG",
+        airline: extractedData[0].airline || "",
+        flightNum: extractedData[0].flightNumber || "",
+        cabin: extractedData[0].cabins || "Economy",
+        // stop: extractedData[0].airlinePnrs.length || 0,
+        airlinePNR: extractedData[0].airlinePnr || "",
+        // eTicketNum: "",
+        origin: extractedData[0].origin || "",
+        destination: extractedData[0].destination || "",
+        date: extractedData[0].date || "",
+        time: extractedData[0].time || "",
+        baggage: extractedData[0].baggageAllowance || "30 KG",
         departureTerminal: "IKA (Tehran,Imam Khomeini Intl, Iran",
       }));
 
@@ -74,19 +74,19 @@ const TwoWayTicket = () => {
         ...prevState,
         basePrice:
           parseFloat(
-            extractedData.priceDetails.basePrice.replace(/[^0-9.-]+/g, "")
+            extractedData[0].priceDetails.basePrice.replace(/[^0-9.-]+/g, "")
           ) || 0, // Remove commas and parse as number
         airportTax:
           parseFloat(
-            extractedData.priceDetails.airportTax.replace(/[^0-9.-]+/g, "")
+            extractedData[0].priceDetails.airportTax.replace(/[^0-9.-]+/g, "")
           ) || 0,
         serviceTax:
           parseFloat(
-            extractedData.priceDetails.serviceTax.replace(/[^0-9.-]+/g, "")
+            extractedData[0].priceDetails.serviceTax.replace(/[^0-9.-]+/g, "")
           ) || 0,
         totalPrice:
           parseFloat(
-            extractedData.priceDetails.totalPrice.replace(/[^0-9.-]+/g, "")
+            extractedData[0].priceDetails.totalPrice.replace(/[^0-9.-]+/g, "")
           ) || 0,
       }));
     }
@@ -115,6 +115,8 @@ const TwoWayTicket = () => {
       [name]: parseFloat(value) || 0,
     }));
   };
+  // console.log(extractedData.airlines[0].name);
+  // console.log("flight",flight);
 
   return (
     <>
@@ -148,7 +150,7 @@ const TwoWayTicket = () => {
           <img className="w-1/6 ml-5" src={logo} alt="smh-agency" />
 
           {/* 1st table */}
-          <div className="mx-3 text-xs">
+          <div className=" text-xs">
             <h2 className="bg-skyBlue font-bold">PASSENGER DETAILS</h2>
             <div className="">
               <table className="table-auto border-2 my-3 border-cyan-500 border-3 w-full ">
@@ -166,7 +168,7 @@ const TwoWayTicket = () => {
                     <th className="border border-cyan-500 border-3 ">Status</th>
                   </tr>
                 </thead>
-                <tbody className="bg-[#cef1f9] colored text-center align-middle font-semibold">
+                <tbody className="bg-[#cef1f9] colored text-center">
                   <tr className="">
                     <td className="border border-cyan-500 py-2">
                       <input
@@ -211,7 +213,7 @@ const TwoWayTicket = () => {
           </div>
 
           {/* 2nd table */}
-          <div className="mx-3 text-xs">
+          <div className=" text-xs">
             <h2 className="bg-skyBlue colored font-bold">AGENT DETAILS</h2>
             <div className="overflow-x-auto">
               <table className="table-auto border-2 my-3 border-cyan-500 border-3 w-full">
@@ -246,18 +248,18 @@ const TwoWayTicket = () => {
           <div className="img-bg">
             {/* 3rd table- 1st part */}
             {/* 3rd table- 2nd part */}
-            <div className="mx-3 text-xs">
+            <div className="text-xs">
               <h2 className="bg-skyBlue  colored font-bold">FLIGHT DETAILS</h2>
 
               <div className="">
                 <div>
-                  {flight.airline && airlineLogos[flight.airline] && (
+                  {/* {flight.airline && airlineLogos[flight.airline] && (
                     <img
                       src={airlineLogos[flight.airline]}
                       alt={`${flight.airline} Logo`}
                       className="w-20 mt-10"
                     />
-                  )}
+                  )} */}
 
                   <table className="table-auto border-2 my-3 border-cyan-500 border-3 w-full">
                     {/* First part of the table */}
@@ -284,67 +286,64 @@ const TwoWayTicket = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-[#cef1f9] colored text-center align-middle border border-borderBlue">
-                      {extractedData.names?.map((pnr, idx) => (
-                        <tr key={idx}>
-                          <td className="border border-cyan-500 whitespace-normal py-2 ">
-                            <input
-                              type="text"
-                              name="pnr"
-                              value={
-                                extractedData.airlines[0].name ||
-                                "Unknown Airline"
-                              }
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500  whitespace-normal py-2 ">
-                            <input
-                              type="text"
-                              value={0}
-                              name="airline"
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500 whitespace-normal py-2 ">
-                            <input
-                              type="text"
-                              name="origin"
-                              value={"Economy"}
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500  whitespace-normal py-2 ">
-                            <input
-                              type="text"
-                              name="destination"
-                              value={extractedData.stop || "0"}
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500 whitespace-normal py-2 ">
-                            <input
-                              type="text"
-                              name="date"
-                              value={extractedData.airlinePnrs[0]}
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500 whitespace-normal py-2 ">
-                            <input
-                              type="text"
-                              name="time"
-                              value={"0"}
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                        </tr>
-                      ))}
+                      {/* {extractedData.names?.map((pnr, idx) => ( */}
+                      <tr>
+                        <td className="border border-cyan-500 whitespace-normal py-2 ">
+                          <input
+                            type="text"
+                            name="pnr"
+                            value={flight.airline || "Unknown Airline"}
+                            onChange={(e) => handleFlightChange(e)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border border-cyan-500  whitespace-normal py-2 ">
+                          <input
+                            type="text"
+                            value={0}
+                            name="airline"
+                            onChange={(e) => handleFlightChange(e)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border border-cyan-500 whitespace-normal py-2 ">
+                          <input
+                            type="text"
+                            name="origin"
+                            value={"Economy"}
+                            onChange={(e) => handleFlightChange(e)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border border-cyan-500  whitespace-normal py-2 ">
+                          <input
+                            type="text"
+                            name="destination"
+                            value={extractedData.stop || "0"}
+                            onChange={(e) => handleFlightChange(e)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border  border-cyan-500 whitespace-normal py-2 ">
+                          <input
+                            type="text"
+                            name="date"
+                            value={flight.airlinePNR}
+                            onChange={(e) => handleFlightChange(e)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border  border-cyan-500 whitespace-normal py-2 ">
+                          <input
+                            type="text"
+                            name="time"
+                            value={"0"}
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                      </tr>
+                      {/* ))} */}
                     </tbody>
 
                     {/* Second part of the table */}
@@ -371,74 +370,62 @@ const TwoWayTicket = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-bgBlue colored text-center align-middle border border-borderBlue">
-                      {extractedData.names?.map((pnr, idx) => (
-                        <tr key={idx}>
-                          <td className="border border-cyan-500 py-2 whitespace-normal">
-                            <input
-                              type="text"
-                              name="origin"
-                              value={
-                                extractedData.origins?.[idx] || "Unknown Origin"
-                              }
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500 py-2 whitespace-normal">
-                            <input
-                              type="text"
-                              name="destination"
-                              value={
-                                extractedData.destinations?.[0] ||
-                                "Unknown Destination"
-                              }
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500 py-2 whitespace-normal">
-                            <input
-                              type="text"
-                              name="date"
-                              value={extractedData.dates?.[0] || "Unknown Date"}
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500 py-2 whitespace-normal">
-                            <input
-                              type="text"
-                              name="time"
-                              value={
-                                extractedData.times?.[idx] || "Unknown Time"
-                              }
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500 py-2 whitespace-normal">
-                            <input
-                              type="text"
-                              name="baggage"
-                              value={extractedData.baggage?.[idx] || "30 KG"}
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500 py-2 whitespace-normal">
-                            <input
-                              type="text"
-                              name="departureTerminal"
-                              value={
-                                extractedData.airlines?.[0].name ||
-                                "Unknown Terminal"
-                              }
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                        </tr>
-                      ))}
+                      <tr>
+                        <td className="border  w-[12rem] border-cyan-500 py-2 whitespace-normal">
+                          <input
+                            type="text"
+                            name="origin"
+                            value={flight.origin || "Unknown Origin"}
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border  w-[11.3rem] border-cyan-500 py-2 whitespace-normal">
+                          <input
+                            type="text"
+                            name="destination"
+                            value={flight.destination || "Unknown Destination"}
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border  w-[4.5rem] border-cyan-500 py-2 whitespace-normal">
+                          <input
+                            type="text"
+                            name="date"
+                            value={flight.date || "Unknown Date"}
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border border-cyan-500 py-2 whitespace-normal">
+                          <input
+                            type="text"
+                            name="time"
+                            value={flight.time || "Unknown Time"}
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border border-cyan-500 py-2 whitespace-normal">
+                          <input
+                            type="text"
+                            name="baggage"
+                            value={flight.baggage || "30 KG"}
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border  w-[11rem] border-cyan-500 py-2 whitespace-normal">
+                          <input
+                            type="text"
+                            name="departureTerminal"
+                            value={flight.destination || "Unknown Terminal"}
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
 
@@ -467,67 +454,64 @@ const TwoWayTicket = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-[#cef1f9] colored text-center align-middle border border-borderBlue">
-                      {extractedData.names?.map((pnr, idx) => (
-                        <tr key={idx}>
-                          <td className="border border-cyan-500 py-2 whitespace-normal">
-                            <input
-                              type="text"
-                              name="pnr"
-                              value={
-                                extractedData.airlines[0].name ||
-                                "Unknown Airline"
-                              }
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500 py-2 whitespace-normal">
-                            <input
-                              type="text"
-                              name="airline"
-                              value={0}
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500 py-2 whitespace-normal">
-                            <input
-                              type="text"
-                              name="origin"
-                              value={"Economy"}
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500 py-2 whitespace-normal">
-                            <input
-                              type="text"
-                              name="destination"
-                              value={extractedData.stop || "0"}
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500 py-2 whitespace-normal">
-                            <input
-                              type="text"
-                              name="date"
-                              value={extractedData.airlinePnrs[1]}
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500 py-2 whitespace-normal">
-                            <input
-                              type="text"
-                              name="time"
-                              value={"0"}
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                        </tr>
-                      ))}
+                      {/* {extractedData.names?.map((pnr, idx) => ( */}
+                      <tr>
+                        <td className="border border-cyan-500 py-2 whitespace-normal">
+                          <input
+                            type="text"
+                            name="pnr"
+                            value={flight.airline || "Unknown Airline"}
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border border-cyan-500 py-2 whitespace-normal">
+                          <input
+                            type="text"
+                            name="airline"
+                            value={flight.flightNum}
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border border-cyan-500 py-2 whitespace-normal">
+                          <input
+                            type="text"
+                            name="origin"
+                            value={"Economy"}
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border border-cyan-500 py-2 whitespace-normal">
+                          <input
+                            type="text"
+                            name="destination"
+                            value={extractedData.stop || "0"}
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border  border-cyan-500 py-2 whitespace-normal">
+                          <input
+                            type="text"
+                            name="date"
+                            value={flight.airlinePNR}
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border  border-cyan-500 py-2 whitespace-normal">
+                          <input
+                            type="text"
+                            name="time"
+                            value={"0"}
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                      </tr>
+                      {/* ))} */}
                     </tbody>
 
                     {/* Second part of the table */}
@@ -554,72 +538,67 @@ const TwoWayTicket = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-bgBlue colored text-center align-middle border border-borderBlue">
-                      {extractedData.names?.map((pnr, idx) => (
-                        <tr key={idx}>
-                          <td className="border border-cyan-500 py-2 whitespace-normal">
-                            <input
-                              type="text"
-                              name="origin"
-                              value={
-                                extractedData.origins?.[1] || "Unknown Origin"
-                              }
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500 py-2 whitespace-normal">
-                            <input
-                              type="text"
-                              name="destination"
-                              value={
-                                extractedData.destinations?.[1] ||
-                                "Unknown Destination"
-                              }
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500 py-2 whitespace-normal">
-                            <input
-                              type="text"
-                              name="date"
-                              value={extractedData.dates?.[2] || "Unknown Date"}
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500 py-2 whitespace-normal">
-                            <input
-                              type="text"
-                              name="time"
-                              value={extractedData.times?.[3] || "Unknown Time"}
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500 py-2 whitespace-normal">
-                            <input
-                              type="text"
-                              name="baggage"
-                              value={extractedData.baggage?.[idx] || "30 KG"}
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                          <td className="border border-cyan-500 py-2 whitespace-normal">
-                            <input
-                              type="text"
-                              name="departureTerminal"
-                              value={
-                                extractedData.airlines?.[0].name ||
-                                "Unknown Terminal"
-                              }
-                              onChange={(e) => handleFlightChange(e, idx)}
-                              className="w-full text-center bg-transparent"
-                            />
-                          </td>
-                        </tr>
-                      ))}
+                      {/* {extractedData.names?.map((pnr, idx) => ( */}
+                      <tr>
+                        <td className="border  w-[12rem] border-cyan-500 py-2 whitespace-normal">
+                          <input
+                            type="text"
+                            name="origin"
+                            value={flight.origin || "Unknown Origin"}
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border  w-[12.2rem] border-cyan-500 py-2 whitespace-normal">
+                          <input
+                            type="text"
+                            name="destination"
+                            value={flight.destination || "Unknown Destination"}
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border  w-[4.5rem] border-cyan-500 py-2 whitespace-normal">
+                          <input
+                            type="text"
+                            name="date"
+                            value={flight.date || "Unknown Date"}
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border border-cyan-500 py-2 whitespace-normal">
+                          <input
+                            type="text"
+                            name="time"
+                            value={extractedData.times?.[3] || "Unknown Time"}
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border border-cyan-500 py-2 whitespace-normal">
+                          <input
+                            type="text"
+                            name="baggage"
+                            value={extractedData.baggage?.[idx] || "30 KG"}
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                        <td className="border w-[10rem] border-cyan-500 py-2 whitespace-normal">
+                          <input
+                            type="text"
+                            name="departureTerminal"
+                            value={
+                              extractedData.airlines?.[2].name ||
+                              "Unknown Terminal"
+                            }
+                            onChange={(e) => handleFlightChange(e, idx)}
+                            className="w-full text-center bg-transparent"
+                          />
+                        </td>
+                      </tr>
+                      {/* ))} */}
                     </tbody>
                   </table>
                 </div>
@@ -628,7 +607,7 @@ const TwoWayTicket = () => {
 
             {/* 4 table */}
 
-            <div className="mx-3 text-xs">
+            <div className=" text-xs">
               <h2 className="bg-skyBlue colored font-bold">PRICE DETAILS</h2>
 
               <div className="border border-cyan-500 border-3 max-w-md my-3">
