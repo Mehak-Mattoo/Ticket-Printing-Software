@@ -417,11 +417,18 @@ function RoundTripExtractFields(text) {
     const destinationMatch = block.match(/Arrive:\s*([A-Za-z\s]+)/);
     const destination = destinationMatch ? destinationMatch[1].trim() : null;
 
-    const dateMatch = block.match(/Date:\s*(\d{2}\s[A-Za-z]+\s\d{4})/);
-    const date = dateMatch ? dateMatch[1] : null;
 
-    const timeMatch = block.match(/Time:\s*(\d{2}:\d{2})/);
-    const time = timeMatch ? timeMatch[1] : null;
+    const dateMatch = [
+      ...block.matchAll(/Date[\s\n]*([\d]{2}\s[A-Za-z]+\s\d{4})/g),
+    ];
+    const date = dateMatch.map((match) => match[1]);
+
+
+const timeMatch = [...block.matchAll(/Time[\s\n]*([\d]{2}:[\d]{2})/g)];
+
+// Extract the matched times
+const time = timeMatch.map((match) => match[1]);
+
 
     const basePriceMatch = block.match(
       /Adult Base Price:\s*([\d,]+)\s*\(x\s1\)/

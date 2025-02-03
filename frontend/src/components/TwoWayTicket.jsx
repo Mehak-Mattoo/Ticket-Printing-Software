@@ -374,7 +374,10 @@ const TwoWayTicket = () => {
                           <input
                             type="text"
                             name="firstAirlineOrigin"
-                            value={flight.origin || "Unknown Origin"}
+                            value={
+                              flight.origin ||
+                              "IMAM KHOMEINI INTL (IKA,Tehran,Iran)"
+                            }
                             onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
@@ -383,16 +386,19 @@ const TwoWayTicket = () => {
                           <input
                             type="text"
                             name="firstAirlineDestination"
-                            value={flight.destination || "Unknown Destination"}
+                            value={
+                              flight.destination ||
+                              "INDIRA GANDHI INTL (DEL,Delhi,India)"
+                            }
                             onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
-                        <td className="border  w-[4.5rem] border-cyan-500 py-2 whitespace-normal">
+                        <td className="border  w-[6rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
                             name="firstAirlineDate"
-                            value={flight.date || "Unknown Date"}
+                            value={flight.date?.[0] || "Unknown Date"}
                             onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
@@ -401,7 +407,7 @@ const TwoWayTicket = () => {
                           <input
                             type="text"
                             name="firstAirlineTime"
-                            value={flight.time || "Unknown Time"}
+                            value={flight.time?.[0] || "Unknown Time"}
                             onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
@@ -484,7 +490,7 @@ const TwoWayTicket = () => {
                         <td className="border border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="secondAirlineDestination"
+                            name="secondAirlineStop"
                             value={extractedData.stop || "0"}
                             onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
@@ -542,7 +548,10 @@ const TwoWayTicket = () => {
                           <input
                             type="text"
                             name="secondAirlineOrigin"
-                            value={flight.origin || "Unknown Origin"}
+                            value={
+                              flight.origin ||
+                              "INDIRA GANDHI INTL (DEL,Delhi,India)"
+                            }
                             onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
@@ -551,16 +560,19 @@ const TwoWayTicket = () => {
                           <input
                             type="text"
                             name="secondAirlineDestination"
-                            value={flight.destination || "Unknown Destination"}
+                            value={
+                              flight.destination ||
+                              "IMAM KHOMEINI INTL (IKA,Tehran,Iran) "
+                            }
                             onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
-                        <td className="border  w-[4.5rem] border-cyan-500 py-2 whitespace-normal">
+                        <td className="border  w-[6.2rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
                             name="secondAirlineDate"
-                            value={flight.date || "Unknown Date"}
+                            value={flight.date?.[2] || "Unknown Date"}
                             onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
@@ -569,7 +581,7 @@ const TwoWayTicket = () => {
                           <input
                             type="text"
                             name="secondAirlineTime"
-                            value={extractedData.times?.[3] || "Unknown Time"}
+                            value={flight.time?.[2] || "Unknown Time"}
                             onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
@@ -583,13 +595,13 @@ const TwoWayTicket = () => {
                             className="w-full text-center bg-transparent"
                           />
                         </td>
-                        <td className="border w-[10rem] border-cyan-500 py-2 whitespace-normal">
+                        <td className="border w-[14rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
                             name="secondAirlineDepartureTerminal"
                             value={
                               extractedData.airlines?.[2].name ||
-                              "Unknown Terminal"
+                              "INDIRA GANDHI INTL (DEL,Delhi,India)"
                             }
                             onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
