@@ -40,12 +40,13 @@ table td input {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
-  }
 
-  @media print {
-  .colored {
+    .colored {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     background-color: #c0f2fd !important;
   }
-}
+  .imgBased{
+    display: block;
+  }
+  }

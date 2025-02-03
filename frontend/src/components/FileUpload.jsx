@@ -148,7 +148,7 @@ export default function FileUploadComponent() {
           Upload your PDF and let us handle the rest. Fast, secure, and easy!
         </p>
 
-        <div className="flex items-center justify-center space-x-6 mb-6">
+        <div className="flex items-center justify-center space-x-6 mb-4">
           <p className="text-gray-700 font-medium">Select ticket type:</p>
           <label className="flex items-center space-x-2 cursor-pointer">
             <input
@@ -191,7 +191,7 @@ export default function FileUploadComponent() {
         </div>
 
         {routeSelection && (
-          <div className="flex items-center justify-center space-x-6 mb-6">
+          <div className="flex items-center justify-center space-x-6 mb-4">
             <p className="text-gray-700 font-medium">Is this ticket D1 or D2?</p>
             <label className="flex items-center space-x-2 cursor-pointer">
               <input

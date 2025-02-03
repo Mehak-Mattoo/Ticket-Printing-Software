@@ -115,8 +115,7 @@ const TwoWayTicket = () => {
       [name]: parseFloat(value) || 0,
     }));
   };
-  // console.log(extractedData.airlines[0].name);
-  // console.log("flight",flight);
+
 
   return (
     <>
@@ -150,14 +149,14 @@ const TwoWayTicket = () => {
           <img className="w-1/6 ml-5" src={logo} alt="smh-agency" />
 
           {/* 1st table */}
-          <div className=" text-xs">
-            <h2 className="bg-skyBlue font-bold">PASSENGER DETAILS</h2>
+          <div className=" text-sm">
+            <h2 className="bg-skyBlue  my-2">PASSENGER DETAILS</h2>
             <div className="">
               <table className="table-auto border-2 my-3 border-cyan-500 border-3 w-full ">
                 <thead className="">
                   <tr className="">
                     <th className="border border-cyan-500 border-3 ">
-                    {ticketType === "D1" ? "TRAVELER" : "Passenger's name"}
+                      {ticketType === "D1" ? "TRAVELER" : "Passenger's name"}
                     </th>
                     <th className="border border-cyan-500 border-3">
                       Passport No.
@@ -213,8 +212,8 @@ const TwoWayTicket = () => {
           </div>
 
           {/* 2nd table */}
-          <div className=" text-xs">
-            <h2 className="bg-skyBlue colored font-bold">AGENT DETAILS</h2>
+          <div className=" text-sm">
+            <h2 className="bg-skyBlue colored  my-2">AGENT DETAILS</h2>
             <div className="overflow-x-auto">
               <table className="table-auto border-2 my-3 border-cyan-500 border-3 w-full">
                 <thead>
@@ -248,8 +247,8 @@ const TwoWayTicket = () => {
           <div className="img-bg">
             {/* 3rd table- 1st part */}
             {/* 3rd table- 2nd part */}
-            <div className="text-xs">
-              <h2 className="bg-skyBlue  colored font-bold">FLIGHT DETAILS</h2>
+            <div className="text-sm">
+              <h2 className="bg-skyBlue  colored  my-2">FLIGHT DETAILS</h2>
 
               <div className="">
                 <div>
@@ -291,9 +290,9 @@ const TwoWayTicket = () => {
                         <td className="border border-cyan-500 whitespace-normal py-2 ">
                           <input
                             type="text"
-                            name="pnr"
+                            name="firstAirlineName"
                             value={flight.airline || "Unknown Airline"}
-                            onChange={(e) => handleFlightChange(e)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
@@ -301,44 +300,44 @@ const TwoWayTicket = () => {
                           <input
                             type="text"
                             value={0}
-                            name="airline"
-                            onChange={(e) => handleFlightChange(e)}
+                            name="firstAirlineNum"
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
                         <td className="border border-cyan-500 whitespace-normal py-2 ">
                           <input
                             type="text"
-                            name="origin"
+                            name="firstAirlineCabin"
                             value={"Economy"}
-                            onChange={(e) => handleFlightChange(e)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
                         <td className="border border-cyan-500  whitespace-normal py-2 ">
                           <input
                             type="text"
-                            name="destination"
+                            name="firstAirlineStop"
                             value={extractedData.stop || "0"}
-                            onChange={(e) => handleFlightChange(e)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
                         <td className="border  border-cyan-500 whitespace-normal py-2 ">
                           <input
                             type="text"
-                            name="date"
+                            name="firstAirlinePNR"
                             value={flight.airlinePNR}
-                            onChange={(e) => handleFlightChange(e)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
-                        <td className="border  border-cyan-500 whitespace-normal py-2 ">
+                        <td className="border border-cyan-500 whitespace-normal py-2 ">
                           <input
                             type="text"
-                            name="time"
-                            value={"0"}
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            name="firstAirlineETicketNum"
+                            value={flight.ETicketNum || "0"}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
@@ -350,10 +349,10 @@ const TwoWayTicket = () => {
                     <thead>
                       <tr className="border">
                         <th className="font-bold border border-cyan-500 ">
-                        {ticketType === "D1" ? "Depart" : "Origin"}
+                          {ticketType === "D1" ? "Depart" : "Origin"}
                         </th>
                         <th className="font-bold border border-cyan-500  ">
-                        {ticketType === "D1" ? "Arrive" : "Destination"}
+                          {ticketType === "D1" ? "Arrive" : "Destination"}
                         </th>
                         <th className="font-bold border border-cyan-500 ">
                           Date
@@ -374,54 +373,54 @@ const TwoWayTicket = () => {
                         <td className="border  w-[12rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="origin"
+                            name="firstAirlineOrigin"
                             value={flight.origin || "Unknown Origin"}
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
                         <td className="border  w-[11.3rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="destination"
+                            name="firstAirlineDestination"
                             value={flight.destination || "Unknown Destination"}
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
                         <td className="border  w-[4.5rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="date"
+                            name="firstAirlineDate"
                             value={flight.date || "Unknown Date"}
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
                         <td className="border border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="time"
+                            name="firstAirlineTime"
                             value={flight.time || "Unknown Time"}
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
                         <td className="border border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="baggage"
+                            name="firstAirlineBaggage"
                             value={flight.baggage || "30 KG"}
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
                         <td className="border  w-[11rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="departureTerminal"
+                            name="firstAirlineDepartureTerminal"
                             value={flight.destination || "Unknown Terminal"}
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
@@ -454,59 +453,58 @@ const TwoWayTicket = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-[#cef1f9] colored text-center align-middle border border-borderBlue">
-                      {/* {extractedData.names?.map((pnr, idx) => ( */}
                       <tr>
                         <td className="border border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="pnr"
+                            name="secondAirlineName"
                             value={flight.airline || "Unknown Airline"}
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
                         <td className="border border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="airline"
-                            value={flight.flightNum}
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            name="secondAirlineNum"
+                            value={flight.flightNum || "0"}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
                         <td className="border border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="origin"
+                            name="secondAirlineCabin"
                             value={"Economy"}
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
                         <td className="border border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="destination"
+                            name="secondAirlineDestination"
                             value={extractedData.stop || "0"}
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
                         <td className="border  border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="date"
+                            name="secondAirlinePNR"
                             value={flight.airlinePNR}
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
                         <td className="border  border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="time"
+                            name="secondAirlineETicketNum"
                             value={"0"}
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
@@ -518,10 +516,10 @@ const TwoWayTicket = () => {
                     <thead>
                       <tr className="border">
                         <th className="font-bold border border-cyan-500 ">
-                        {ticketType === "D1" ? "Depart" : "Origin"}
+                          {ticketType === "D1" ? "Depart" : "Origin"}
                         </th>
                         <th className="font-bold border border-cyan-500 ">
-                        {ticketType === "D1" ? "Arrive" : "Destination"}
+                          {ticketType === "D1" ? "Arrive" : "Destination"}
                         </th>
                         <th className="font-bold border border-cyan-500">
                           Date
@@ -543,57 +541,57 @@ const TwoWayTicket = () => {
                         <td className="border  w-[12rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="origin"
+                            name="secondAirlineOrigin"
                             value={flight.origin || "Unknown Origin"}
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
                         <td className="border  w-[12.2rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="destination"
+                            name="secondAirlineDestination"
                             value={flight.destination || "Unknown Destination"}
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
                         <td className="border  w-[4.5rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="date"
+                            name="secondAirlineDate"
                             value={flight.date || "Unknown Date"}
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
                         <td className="border border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="time"
+                            name="secondAirlineTime"
                             value={extractedData.times?.[3] || "Unknown Time"}
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
                         <td className="border border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="baggage"
+                            name="secondAirlinebaggage"
                             value={extractedData.baggage?.[idx] || "30 KG"}
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
                         <td className="border w-[10rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
-                            name="departureTerminal"
+                            name="secondAirlineDepartureTerminal"
                             value={
                               extractedData.airlines?.[2].name ||
                               "Unknown Terminal"
                             }
-                            onChange={(e) => handleFlightChange(e, idx)}
+                            onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
@@ -607,8 +605,8 @@ const TwoWayTicket = () => {
 
             {/* 4 table */}
 
-            <div className=" text-xs">
-              <h2 className="bg-skyBlue colored font-bold">PRICE DETAILS</h2>
+            <div className=" text-sm">
+              <h2 className="bg-skyBlue colored my-2">PRICE DETAILS</h2>
 
               <div className="border border-cyan-500 border-3 max-w-md my-3">
                 <div className="flex justify-between border-b text-center border-cyan-500">
