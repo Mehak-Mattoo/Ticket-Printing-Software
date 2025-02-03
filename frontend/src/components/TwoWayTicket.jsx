@@ -8,7 +8,7 @@ import { airlineLogos } from "../constant";
 
 const TwoWayTicket = () => {
   const location = useLocation();
-  const { extractedData } = location.state || {};
+  const { extractedData , ticketType } = location.state || {};
 
   const [passenger, setPassenger] = useState({
     name: "",
@@ -157,7 +157,7 @@ const TwoWayTicket = () => {
                 <thead className="">
                   <tr className="">
                     <th className="border border-cyan-500 border-3 ">
-                      Passenger's name
+                    {ticketType === "D1" ? "TRAVELER" : "Passenger's name"}
                     </th>
                     <th className="border border-cyan-500 border-3">
                       Passport No.
@@ -350,10 +350,10 @@ const TwoWayTicket = () => {
                     <thead>
                       <tr className="border">
                         <th className="font-bold border border-cyan-500 ">
-                          Origin
+                        {ticketType === "D1" ? "Depart" : "Origin"}
                         </th>
                         <th className="font-bold border border-cyan-500  ">
-                          Destination
+                        {ticketType === "D1" ? "Arrive" : "Destination"}
                         </th>
                         <th className="font-bold border border-cyan-500 ">
                           Date
@@ -518,10 +518,10 @@ const TwoWayTicket = () => {
                     <thead>
                       <tr className="border">
                         <th className="font-bold border border-cyan-500 ">
-                          Origin
+                        {ticketType === "D1" ? "Depart" : "Origin"}
                         </th>
                         <th className="font-bold border border-cyan-500 ">
-                          Destination
+                        {ticketType === "D1" ? "Arrive" : "Destination"}
                         </th>
                         <th className="font-bold border border-cyan-500">
                           Date

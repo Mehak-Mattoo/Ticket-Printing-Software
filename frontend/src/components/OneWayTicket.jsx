@@ -8,7 +8,7 @@ import { airlineLogos } from "../constant";
 
 const OneWayTicket = () => {
   const location = useLocation();
-  const { extractedData } = location.state || {};
+  const { extractedData, ticketType } = location.state || {};
 
   const [passenger, setPassenger] = useState({
     name: "",
@@ -38,6 +38,8 @@ const OneWayTicket = () => {
     serviceTax: 0,
     totalPrice: 0,
   });
+
+  console.log("TicketType ", ticketType);
 
   useEffect(() => {
     if (extractedData) {
@@ -149,7 +151,7 @@ const OneWayTicket = () => {
                 <thead className="">
                   <tr className="">
                     <th className="border border-cyan-500 border-3 ">
-                      Passenger's name
+                      {ticketType === "D1" ? "TRAVELER" : "Passenger's name"}
                     </th>
                     <th className="border border-cyan-500 border-3 ">
                       Passport No.
@@ -168,7 +170,7 @@ const OneWayTicket = () => {
                         name="name"
                         value={passenger.name}
                         onChange={handlePassengerChange}
-                        className="w-full text-center bg-transparent"
+                        className="w-full text-center bg-transparent font-semibold"
                       />
                     </td>
                     <td className="border border-cyan-500 ">
@@ -284,7 +286,7 @@ const OneWayTicket = () => {
                           name="airline"
                           value={flight.airline}
                           onChange={handleFlightChange}
-                          className="w-full text-center bg-transparent"
+                          className="w-96 text-center bg-transparent"
                         />
                       </td>
                       <td className="border  border-cyan-500  whitespace-normal py-2">
@@ -293,7 +295,7 @@ const OneWayTicket = () => {
                           name="flightNum"
                           value={flight.flightNum}
                           onChange={handleFlightChange}
-                          className="w-full text-center bg-transparent"
+                          className="w-96 text-center bg-transparent"
                         />
                       </td>
                       <td className="border border-cyan-500  whitespace-normal">
@@ -302,7 +304,7 @@ const OneWayTicket = () => {
                           name="cabin"
                           value={flight.cabin}
                           onChange={handleFlightChange}
-                          className="w-full text-center bg-transparent"
+                          className="w-32 text-center bg-transparent"
                         />
                       </td>
                       <td className="border border-cyan-500  whitespace-normal">
@@ -311,7 +313,7 @@ const OneWayTicket = () => {
                           name="stop"
                           value={flight.stop}
                           onChange={handleFlightChange}
-                          className="w-full text-center bg-transparent"
+                          className=" text-center bg-transparent"
                         />
                       </td>
                       <td className="border border-cyan-500  whitespace-normal">
@@ -320,7 +322,7 @@ const OneWayTicket = () => {
                           name="airlinePNR"
                           value={flight.airlinePNR}
                           onChange={handleFlightChange}
-                          className="w-full text-center bg-transparent"
+                          className=" text-center bg-transparent"
                         />
                       </td>
                       <td className="border border-cyan-500  whitespace-normal">
@@ -329,7 +331,7 @@ const OneWayTicket = () => {
                           name="eTicketNum"
                           value={flight.eTicketNum}
                           onChange={handleFlightChange}
-                          className="w-full text-center bg-transparent"
+                          className="w-96 text-center bg-transparent"
                         />
                       </td>
                     </tr>
@@ -339,10 +341,10 @@ const OneWayTicket = () => {
                   <thead>
                     <tr className="border">
                       <th className="font-bold border border-cyan-500 ">
-                        Origin
+                        {ticketType === "D1" ? "Depart" : "Origin"}
                       </th>
                       <th className="font-bold border border-cyan-500 ">
-                        Destination
+                        {ticketType === "D1" ? "Arrive" : "Destination"}
                       </th>
                       <th className="font-bold border border-cyan-500 ">
                         Date
@@ -366,7 +368,7 @@ const OneWayTicket = () => {
                           name="origin"
                           value={flight.origin}
                           onChange={handleFlightChange}
-                          className="w-full text-center bg-transparent"
+                          className="w-96 text-center bg-transparent"
                         />
                       </td>
                       <td className="border w-[11rem] border-cyan-500 py-1 whitespace-normal">

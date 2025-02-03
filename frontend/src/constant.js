@@ -1,7 +1,7 @@
 // src/helper/constants.js
 
 // Import all airline logos
-import airArabiaLogo from "../src/assets/airline/Air Arabia.png"
+import airArabiaLogo from "../src/assets/airline/Air Arabia.png";
 import airIndiaLogo from "../src/assets/airline/Air India.png";
 import airIndiaExpressLogo from "../src/assets/airline/air-india-express.png";
 import air1airLogo from "../src/assets/airline/air1air.jpg";
@@ -50,6 +50,7 @@ import vareshAirlinesLogo from "../src/assets/airline/Varesh Airlines.png";
 import vistaraAirlinesLogo from "../src/assets/airline/vistara airline.jpg";
 import yazdAirlinesLogo from "../src/assets/airline/Yazd Airline.png";
 import zagrosAirlinesLogo from "../src/assets/airline/Zagros Airlines.png";
+
 // Mapping object for airline logos
 export const airlineLogos = {
   "Air Arabia": airArabiaLogo,
@@ -80,7 +81,8 @@ export const airlineLogos = {
   "Kish Air": kishAirLogo,
   "Kuwait Airways": kuwaitAirwaysLogo,
   "Lufthansa": lufthansaLogo,
-  "Mahan Airlines": mahanAirLogo,
+  "Mahan Air": mahanAirLogo,
+  "Mahan Airlines": mahanAirLogo, // Add alternative name for Mahan Air
   "Meraj Airlines": merajAirlinesLogo,
   "Oman Air": omanAirLogo,
   "Parsair": parsairLogo,
@@ -100,5 +102,5 @@ export const airlineLogos = {
   "Varesh Airlines": vareshAirlinesLogo,
   "vistara airline": vistaraAirlinesLogo,
   "Yazd Airline": yazdAirlinesLogo,
-  "Zagros Airlines": zagrosAirlinesLogo
+  "Zagros Airlines": zagrosAirlinesLogo,
 };
