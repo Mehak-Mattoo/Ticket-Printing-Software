@@ -5,7 +5,6 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const path = require("path");
-const { log } = require("console");
 
 require("dotenv").config();
 
@@ -46,6 +45,7 @@ if (!fs.existsSync(tempDirectory)) {
 }
 
 let uploadedFile = null;
+
 // Upload PDF and parse its content
 app.post("/api/upload-pdf", upload.single("pdf"), async (req, res) => {
   try {
@@ -71,6 +71,7 @@ app.post("/api/upload-pdf", upload.single("pdf"), async (req, res) => {
   }
 });
 
+// Extract data from all tickets in the PDF
 app.get("/api/extract-one-way-pdf-details", async (req, res) => {
   try {
     if (!uploadedFile) {
@@ -81,7 +82,13 @@ app.get("/api/extract-one-way-pdf-details", async (req, res) => {
 
     const data = await pdfParse(uploadedFile);
 
-    const extractedData = OneWayExtractFields(data.text);
+    // Split the text into individual tickets
+    const ticketsText = splitIntoTickets(data.text);
+
+    // Extract data from each ticket
+    const extractedData = ticketsText.map((ticketText) =>
+      OneWayExtractFields(ticketText)
+    );
 
     res.status(200).json({ success: true, extractedData });
   } catch (error) {
@@ -94,31 +101,16 @@ app.get("/api/extract-one-way-pdf-details", async (req, res) => {
   }
 });
 
-app.get("/api/extract-two-way-pdf-details", async (req, res) => {
-  try {
-    if (!uploadedFile) {
-      return res
-        .status(400)
-        .json({ success: false, message: "No PDF uploaded" });
-    }
+// Function to split the PDF text into individual tickets
+function splitIntoTickets(text) {
+  // Use a delimiter to split the text into tickets
+  // For example, if each ticket is separated by "---" or "Ticket Number:"
+  const delimiter = "Ticket Number:"; // Adjust this based on your PDF structure
+  return text.split(delimiter).slice(1); // Slice to ignore the first empty split
+}
 
-    const data = await pdfParse(uploadedFile);
-
-    const extractedData = RoundTripExtractFields(data.text);
-
-    res.status(200).json({ success: true, extractedData });
-  } catch (error) {
-    console.error("Error extracting PDF content:", error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to extract PDF content",
-      error: error.message,
-    });
-  }
-});
-
+// Function to extract fields from a single ticket's text
 function OneWayExtractFields(text) {
-  console.log(text);
   const nameMatch = text.match(
     /(?:Passenger’s Name|Traveller)\s+([A-Z][A-Z\s]*)\n/
   );
@@ -169,7 +161,6 @@ function OneWayExtractFields(text) {
     : null;
 
   // Extract Destination Airport Name
-
   const destinationAirportMatch = text.match(
     /(?:Destination|Depart):?\s*([\w\s]+)\s*\(([^)]+)\)/i
   );
@@ -194,7 +185,6 @@ function OneWayExtractFields(text) {
   const time = timeMatch ? timeMatch[0] : null;
 
   // Baggage
-
   const baggageMatch = text.match(/Checked-in baggage\s+(\d+\s?Kg)/i);
   const baggage = baggageMatch ? baggageMatch[1].trim() : null;
 
@@ -202,7 +192,7 @@ function OneWayExtractFields(text) {
   const terminalMatch = text.match(/Departure Terminal:\s+(\w+)/);
   const terminal = terminalMatch ? terminalMatch[1] : null;
 
-  // Base Price- not present in input file
+  // Base Price
   const basePriceMatch = text.match(/Adult Base Price:\s+(\d+\.?\d*)/);
   const basePrice = basePriceMatch ? basePriceMatch[1] : null;
 
@@ -242,6 +232,7 @@ function OneWayExtractFields(text) {
     totalPrice,
   };
 }
+
 
 // function RoundTripExtractFields(text) {
 //   console.log(text);

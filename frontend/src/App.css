@@ -28,7 +28,17 @@ table td input {
   overflow-x: hidden;
 }
 
+/* @media (max-width: 768px) {
+  .md\:w-1\/6 {
+    width: 100%;
+    
+  }
+} */
+
  @media print {
+  .ticket-container {
+    page-break-before: always; /* Start a new page before each ticket */
+  }
     /* Hide the specific button or element during printing */
     .btn-to-hide {
       display: none;

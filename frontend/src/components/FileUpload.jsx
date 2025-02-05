@@ -112,7 +112,7 @@ export default function FileUploadComponent() {
 
       const response = await axios.get(endpoint);
 
-      console.log(response.data);
+      console.log('extracted data',response.data);
 
       if (response.data.success) {
         navigate(`/${routeSelection}`, {

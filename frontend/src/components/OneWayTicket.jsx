@@ -2,14 +2,10 @@ import React, { useState, useEffect } from "react";
 import header from "../../src/assets/header.png";
 import logo from "../../src/assets/agencylogo.png";
 import "../App.css";
-import { useLocation } from "react-router-dom";
 import PrimaryBtn from "../helper/PrimaryBtn";
 import { airlineLogos } from "../constant";
 
-const OneWayTicket = () => {
-  const location = useLocation();
-  const { extractedData, ticketType } = location.state || {};
-
+const OneWayTicket = ({ extractedData, ticketType }) => {
   const [passenger, setPassenger] = useState({
     name: "",
     passportNum: "",
@@ -39,13 +35,8 @@ const OneWayTicket = () => {
     totalPrice: 0,
   });
 
-  console.log("TicketType ", ticketType);
-
   useEffect(() => {
     if (extractedData) {
-      console.log(extractedData);
-
-      // Update passenger state
       setPassenger({
         name: extractedData.name || "",
         passportNum: extractedData.passportNumber || "0",
@@ -53,7 +44,6 @@ const OneWayTicket = () => {
         status: extractedData.status || "Confirmed",
       });
 
-      // Update flight state
       setFlight({
         airline: extractedData.airlineName || "Mahan Air",
         flightNum: extractedData.flightNumber || "0",
@@ -79,7 +69,6 @@ const OneWayTicket = () => {
           "IMAM KHOMEINI INTL (IKA, Tehran, Iran)",
       });
 
-      // Update price state
       setPrice({
         basePrice: extractedData.basePrice || 0,
         airportTax: extractedData.airportTax || 0,
@@ -107,23 +96,26 @@ const OneWayTicket = () => {
 
   const handlePriceChange = (e) => {
     const { name, value } = e.target;
+
+    // If the value is an empty string, set it to an empty string
+    // Otherwise, parse it as a float
+    const parsedValue = value === "" ? "" : parseFloat(value);
+
     setPrice((prevState) => ({
       ...prevState,
-      [name]: parseFloat(value) || 0,
+      [name]: parsedValue,
     }));
   };
 
-  
-
   return (
     <>
+    <div className="ticket-container">
       <div>
-        {/* Back Button */}
         <div className="p-2 flex justify-between items-center bg-gray-50 rounded-lg ">
           <PrimaryBtn
             bgColor="bg-gray-500 hover:bg-gray-600"
             onClick={() => {
-              window.history.back(); // Navigate back to the previous page
+              window.history.back();
             }}
             className="btn-to-hide px-6 py-2 rounded-lg text-white font-semibold shadow-md transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
           >
@@ -147,7 +139,7 @@ const OneWayTicket = () => {
 
           {/* 1st table */}
           <div className="mx-1 text-sm">
-            <h2 className="colored bg-skyBlue text-base my-2">
+            <h2 className="colored bg-cyan-100 text-base my-2">
               PASSENGER DETAILS
             </h2>
             <div className="">
@@ -166,7 +158,7 @@ const OneWayTicket = () => {
                     <th className="border border-cyan-500 border-3 ">Status</th>
                   </tr>
                 </thead>
-                <tbody className="colored bg-skyBlue text-center align-middle ">
+                <tbody className="colored bg-cyan-100 text-center align-middle ">
                   <tr className="">
                     <td className="border border-cyan-500 ">
                       <input
@@ -183,7 +175,7 @@ const OneWayTicket = () => {
                         name="passportNum"
                         value={passenger.passportNum}
                         onChange={handlePassengerChange}
-                        className="w-full text-center bg-transparent"
+                        className="w-full font-semibold text-center bg-transparent"
                       />
                     </td>
                     <td className="border border-cyan-500 ">
@@ -192,7 +184,7 @@ const OneWayTicket = () => {
                         name="DOB"
                         value={passenger.DOB}
                         onChange={handlePassengerChange}
-                        className="w-full text-center bg-transparent"
+                        className="w-full font-semibold text-center bg-transparent"
                       />
                     </td>
                     <td className="border border-cyan-500 py-2">
@@ -201,7 +193,7 @@ const OneWayTicket = () => {
                         name="status"
                         value={passenger.status || "Confirmed"}
                         onChange={handlePassengerChange}
-                        className="w-full text-center bg-transparent"
+                        className="w-full font-semibold text-center bg-transparent"
                       />
                     </td>
                   </tr>
@@ -212,7 +204,9 @@ const OneWayTicket = () => {
 
           {/* 2nd table */}
           <div className="mx-1 text-sm ">
-            <h2 className="colored bg-skyBlue text-base my-2">AGENT DETAILS</h2>
+            <h2 className="colored bg-cyan-100 text-base my-2">
+              AGENT DETAILS
+            </h2>
             <div className="overflow-x-auto">
               <table className="table-auto border-2 my-3 border-cyan-500 border-3 w-full">
                 <thead>
@@ -249,17 +243,17 @@ const OneWayTicket = () => {
             {/* 3rd table- 1st part */}
             {/* 3rd table- 2nd part */}
             <div className="mx-1 text-sm">
-              <h2 className="colored bg-skyBlue text-base my-2">
+              <h2 className="colored bg-cyan-100 text-base my-2">
                 FLIGHT DETAILS
               </h2>
 
-              <div className="flex ">
-                <div className="">
+              <div className="flex flex-col md:flex-row">
+                <div className="md:w-1/6 flex ">
                   {flight.airline && airlineLogos[flight.airline] && (
                     <img
                       src={airlineLogos[flight.airline]}
                       alt={`${flight.airline} Logo`}
-                      className="w-20 mt-10  "
+                      className="w-40 md:w-20  print:block"
                     />
                   )}
                 </div>
@@ -295,7 +289,7 @@ const OneWayTicket = () => {
                           name="airline"
                           value={flight.airline}
                           onChange={handleFlightChange}
-                          className="w-96 text-center bg-transparent"
+                          className="w-96 font-semibold text-center bg-transparent"
                         />
                       </td>
                       <td className="border  border-cyan-500  whitespace-normal py-2">
@@ -304,7 +298,7 @@ const OneWayTicket = () => {
                           name="flightNum"
                           value={flight.flightNum}
                           onChange={handleFlightChange}
-                          className="w-96 text-center bg-transparent"
+                          className="w-96 font-semibold text-center bg-transparent"
                         />
                       </td>
                       <td className="border border-cyan-500  whitespace-normal">
@@ -340,7 +334,7 @@ const OneWayTicket = () => {
                           name="eTicketNum"
                           value={flight.eTicketNum}
                           onChange={handleFlightChange}
-                          className="w-96 text-center bg-transparent"
+                          className="w-96 text-center font-semibold bg-transparent"
                         />
                       </td>
                     </tr>
@@ -435,54 +429,54 @@ const OneWayTicket = () => {
             {/* 4 table */}
 
             <div className="mx-1 text-sm">
-              <h2 className="colored bg-skyBlue text-base my-2 ">
+              <h2 className="colored bg-cyan-100 text-base my-2 ">
                 PRICE DETAILS
               </h2>
 
-              <div className="border border-cyan-500 border-3 max-w-md my-3 ">
-                <div className="flex justify-between border-b text-center border-cyan-500 ">
-                  <div className="font-semibold w-1/2 p-2">Base Price</div>
-                  <div className="font-bold w-1/2 border-cyan-500 border-l-2 p-2">
+              <div className="border border-cyan-500 border-3 max-w-md my-3">
+                <div className="flex justify-between border-b text-center border-cyan-500">
+                  <div className="font-bold w-1/2 p-2">Base Price</div>
+                  <div className="font-semibold w-1/2 border-cyan-500 border-l-2 p-2">
                     <input
                       type="number"
                       name="basePrice"
-                      value={price.basePrice}
+                      value={price.basePrice === 0 ? "" : price.basePrice} // Handle empty string for 0
                       onChange={handlePriceChange}
                       className="w-full text-center bg-transparent"
                     />
                   </div>
                 </div>
                 <div className="flex colored justify-between border-b text-center border-cyan-500 bg-bgBlue">
-                  <div className="font-semibold w-1/2 p-2">Airport Tax</div>
-                  <div className="font-bold w-1/2 border-cyan-500 border-l-2 p-2">
+                  <div className="font-bold w-1/2 p-2">Airport Tax</div>
+                  <div className="font-semibold w-1/2 border-cyan-500 border-l-2 p-2">
                     <input
                       type="number"
                       name="airportTax"
-                      value={price.airportTax}
+                      value={price.airportTax === 0 ? "" : price.airportTax} // Handle empty string for 0
                       onChange={handlePriceChange}
                       className="w-full text-center bg-transparent"
                     />
                   </div>
                 </div>
                 <div className="flex justify-between border-b text-center border-cyan-500">
-                  <div className="font-semibold w-1/2 p-2">Service Tax</div>
-                  <div className="font-bold w-1/2 border-cyan-500 border-l-2 p-2">
+                  <div className="font-bold w-1/2 p-2">Service Tax</div>
+                  <div className="font-semibold w-1/2 border-cyan-500 border-l-2 p-2">
                     <input
                       type="number"
                       name="serviceTax"
-                      value={price.serviceTax}
+                      value={price.serviceTax === 0 ? "" : price.serviceTax} // Handle empty string for 0
                       onChange={handlePriceChange}
                       className="w-full text-center bg-transparent"
                     />
                   </div>
                 </div>
                 <div className="flex colored justify-between text-center bg-bgBlue">
-                  <div className="font-semibold w-1/2 p-2">Total Price</div>
-                  <div className="font-bold w-1/2 border-cyan-500 border-l-2 p-2">
+                  <div className="font-bold w-1/2 p-2">Total Price</div>
+                  <div className="font-semibold w-1/2 border-cyan-500 border-l-2 p-2">
                     <input
                       type="number"
                       name="totalPrice"
-                      value={price.totalPrice}
+                      value={price.totalPrice === 0 ? "" : price.totalPrice} // Handle empty string for 0
                       onChange={handlePriceChange}
                       className="w-full text-center bg-transparent"
                     />
@@ -492,6 +486,7 @@ const OneWayTicket = () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </>
   );
