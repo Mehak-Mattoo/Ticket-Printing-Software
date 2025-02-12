@@ -101,6 +101,35 @@ app.get("/api/extract-one-way-pdf-details", async (req, res) => {
   }
 });
 
+app.get("/api/extract-two-way-pdf-details", async (req, res) => {
+  try {
+    if (!uploadedFile) {
+      return res
+        .status(400)
+        .json({ success: false, message: "No PDF uploaded" });
+    }
+
+    const data = await pdfParse(uploadedFile);
+
+   
+   const ticketsText = splitIntoTickets(data.text);
+
+    // Extract data from each ticket
+    const extractedData = ticketsText.map((ticketText) =>
+      RoundTripExtractFields(ticketText)
+    );
+
+    res.status(200).json({ success: true, extractedData });
+  } catch (error) {
+    console.error("Error extracting PDF content:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to extract PDF content",
+      error: error.message,
+    });
+  }
+});
+
 // Function to split the PDF text into individual tickets
 function splitIntoTickets(text) {
   // Use a delimiter to split the text into tickets
