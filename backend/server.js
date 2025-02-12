@@ -117,7 +117,7 @@ function splitIntoTickets(text) {
 // Function to extract fields from a single ticket's text
 function OneWayExtractFields(text) {
   const nameMatch = text.match(
-    /(?:Passenger’s Name|Traveller)\s+([A-Z][A-Z\s]*)\n/
+    /(?:Passenger's Name|Traveler)\s*([A-Z][A-Z\s\h]*)\n/
   );
   const name = nameMatch ? nameMatch[1].trim() : null;
 
@@ -147,15 +147,16 @@ function OneWayExtractFields(text) {
   const stops = stopsMatch ? stopsMatch[1] : "0";
 
   // Airline PNR
-  const pnrMatch = text.match(/Airline reservation code \(PNR\):\s+(\w+)/);
+  const pnrMatch = text.match(/(?:Airline reservation code \(PNR\)|Airline PNR):\s+(\w+)/);
   const pnr = pnrMatch ? pnrMatch[1] : null;
+  
 
-  // E-ticket Number
-  const ticketMatch = text.match(/Ticket Number:\s+(\d+)/);
+  const ticketMatch = text.match(/(?:Ticket Number|E-Ticket Number):\s+(\d+)/);
   const eTicket = ticketMatch ? ticketMatch[1] : null;
+  
 
   const originAirportMatch = text.match(
-    /(?:Origin|Arrive):?\s*([\w\s]+)\s*\(([^)]+)\)/i
+    /(?:Origin|Depart):?\s*([\w\s]+)\s*\(([^)]+)\)/i
   );
   const originAirport = originAirportMatch
     ? originAirportMatch[1].trim()
@@ -167,7 +168,7 @@ function OneWayExtractFields(text) {
 
   // Extract Destination Airport Name
   const destinationAirportMatch = text.match(
-    /(?:Destination|Depart):?\s*([\w\s]+)\s*\(([^)]+)\)/i
+    /(?:Destination|Arrive):?\s*([\w\s]+)\s*\(([^)]+)\)/i
   );
   const destinationAirport = destinationAirportMatch
     ? destinationAirportMatch[1].trim()
@@ -189,9 +190,9 @@ function OneWayExtractFields(text) {
   const timeMatch = text.match(/\b\d{2}:\d{2}\b/);
   const time = timeMatch ? timeMatch[0] : null;
 
-  // Baggage
-  const baggageMatch = text.match(/Checked-in baggage\s+(\d+\s?Kg)/i);
+  const baggageMatch = text.match(/(?:Checked-in baggage|Baggage)\s+(\d+\s?Kg)/i);
   const baggage = baggageMatch ? baggageMatch[1].trim() : null;
+  
 
   // Departure Terminal (if mentioned)
   const terminalMatch = text.match(/Departure Terminal:\s+(\w+)/);
@@ -238,6 +239,7 @@ function OneWayExtractFields(text) {
   };
 }
 
+// Start the server
 
 // function RoundTripExtractFields(text) {
 //   console.log(text);
