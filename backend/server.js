@@ -132,10 +132,15 @@ app.get("/api/extract-two-way-pdf-details", async (req, res) => {
 
 // Function to split the PDF text into individual tickets
 function splitIntoTickets(text) {
-  // Use a delimiter to split the text into tickets
-  // For example, if each ticket is separated by "---" or "Ticket Number:"
-  const delimiter = "Ticket Number:"; // Adjust this based on your PDF structure
-  return text.split(delimiter).slice(1); // Slice to ignore the first empty split
+  // Use a more robust delimiter to split the text into tickets
+  const delimiter = /(?:Ticket Number:|Passenger’s Name:|Traveller:)/;
+  const tickets = text.split(delimiter).slice(1); // Slice to ignore the first empty split
+
+  // Reconstruct the tickets with the delimiter included
+  return tickets.map((ticket) => {
+    const match = text.match(delimiter);
+    return match ? match[0] + ticket : ticket;
+  });
 }
 
 // Function to extract fields from a single ticket's text
