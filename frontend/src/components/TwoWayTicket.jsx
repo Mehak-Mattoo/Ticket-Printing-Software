@@ -46,7 +46,7 @@ const TwoWayTicket = () => {
       // Update passenger state
       setPassenger((prevState) => ({
         ...prevState,
-        name: extractedData[0].name || "", // Get the first name if available
+        name: extractedData[0][0].name || "", // Get the first name if available
         passportNum: extractedData[0].passportNumber || "", // Get the first passport number
         DOB: "", // Get the first date (assuming DOB is the first date)
         status: "Confirmed", // Since it's not available in the extracted data, leave it empty or set to a default value
@@ -68,25 +68,35 @@ const TwoWayTicket = () => {
         baggage: extractedData[0].baggageAllowance || "30 KG",
         departureTerminal: "IKA (Tehran,Imam Khomeini Intl, Iran",
       }));
+      
 
       // Update price state
       setPrice((prevState) => ({
         ...prevState,
         basePrice:
           parseFloat(
-            extractedData[0].priceDetails.basePrice.replace(/[^0-9.-]+/g, "")
+            extractedData[0][0].priceDetails.basePrice?.replace(/[^0-9.-]+/g, "")
           ) || 0, // Remove commas and parse as number
         airportTax:
           parseFloat(
-            extractedData[0].priceDetails.airportTax.replace(/[^0-9.-]+/g, "")
+            extractedData[0][0].priceDetails.airportTax?.replace(
+              /[^0-9.-]+/g,
+              ""
+            )
           ) || 0,
         serviceTax:
           parseFloat(
-            extractedData[0].priceDetails.serviceTax.replace(/[^0-9.-]+/g, "")
+            extractedData[0][0].priceDetails.serviceTax?.replace(
+              /[^0-9.-]+/g,
+              ""
+            )
           ) || 0,
         totalPrice:
           parseFloat(
-            extractedData[0].priceDetails.totalPrice.replace(/[^0-9.-]+/g, "")
+            extractedData[0][0].priceDetails.totalPrice?.replace(
+              /[^0-9.-]+/g,
+              ""
+            )
           ) || 0,
       }));
     }
@@ -115,6 +125,11 @@ const TwoWayTicket = () => {
       [name]: parseFloat(value) || 0,
     }));
   };
+
+  useEffect(() => {
+    console.log("price", extractedData[0][0].priceDetails.basePrice);
+    
+  }, []);
 
 
   return (
@@ -314,7 +329,7 @@ const TwoWayTicket = () => {
                             className="w-full text-center bg-transparent"
                           />
                         </td>
-                        <td className="border border-cyan-500  whitespace-normal py-2 ">
+                        <td className="border w-[2rem] border-cyan-500  whitespace-normal py-2 ">
                           <input
                             type="text"
                             name="firstAirlineStop"
@@ -323,7 +338,7 @@ const TwoWayTicket = () => {
                             className="w-full text-center bg-transparent"
                           />
                         </td>
-                        <td className="border  border-cyan-500 whitespace-normal py-2 ">
+                        <td className="border w-[7rem] border-cyan-500 whitespace-normal py-2 ">
                           <input
                             type="text"
                             name="firstAirlinePNR"
@@ -368,9 +383,9 @@ const TwoWayTicket = () => {
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="bg-bgBlue colored text-center align-middle border border-borderBlue">
+                    <tbody className="bg-bgBlue colored text-center border border-borderBlue">
                       <tr>
-                        <td className="border  w-[12rem] border-cyan-500 py-2 whitespace-normal">
+                        <td className="border w-[16rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
                             name="firstAirlineOrigin"
@@ -382,7 +397,7 @@ const TwoWayTicket = () => {
                             className="w-full text-center bg-transparent"
                           />
                         </td>
-                        <td className="border  w-[11.3rem] border-cyan-500 py-2 whitespace-normal">
+                        <td className="border  w-[14rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
                             name="firstAirlineDestination"
@@ -394,20 +409,20 @@ const TwoWayTicket = () => {
                             className="w-full text-center bg-transparent"
                           />
                         </td>
-                        <td className="border  w-[6rem] border-cyan-500 py-2 whitespace-normal">
+                        <td className="border  w-[7rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
                             name="firstAirlineDate"
-                            value={flight.date?.[0] || "Unknown Date"}
+                            value={flight.date?.[0] || "6-10-2025"}
                             onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
-                        <td className="border border-cyan-500 py-2 whitespace-normal">
+                        <td className="border w-[4.6rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
                             name="firstAirlineTime"
-                            value={flight.time?.[0] || "Unknown Time"}
+                            value={flight.time?.[0] || "02.00"}
                             onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
@@ -421,11 +436,14 @@ const TwoWayTicket = () => {
                             className="w-full text-center bg-transparent"
                           />
                         </td>
-                        <td className="border  w-[11rem] border-cyan-500 py-2 whitespace-normal">
+                        <td className="border  w-[15rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
                             name="firstAirlineDepartureTerminal"
-                            value={flight.destination || "Unknown Terminal"}
+                            value={
+                              flight.origin ||
+                              "IMAM KHOMEINI INTL (IKA,Tehran,Iran)"
+                            }
                             onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
@@ -496,7 +514,7 @@ const TwoWayTicket = () => {
                             className="w-full text-center bg-transparent"
                           />
                         </td>
-                        <td className="border  border-cyan-500 py-2 whitespace-normal">
+                        <td className="border w-[5rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
                             name="secondAirlinePNR"
@@ -544,7 +562,7 @@ const TwoWayTicket = () => {
                     <tbody className="bg-bgBlue colored text-center align-middle border border-borderBlue">
                       {/* {extractedData.names?.map((pnr, idx) => ( */}
                       <tr>
-                        <td className="border  w-[12rem] border-cyan-500 py-2 whitespace-normal">
+                        <td className="border  w-[13.5rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
                             name="secondAirlineOrigin"
@@ -556,7 +574,7 @@ const TwoWayTicket = () => {
                             className="w-full text-center bg-transparent"
                           />
                         </td>
-                        <td className="border  w-[12.2rem] border-cyan-500 py-2 whitespace-normal">
+                        <td className="border  w-[14.2rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
                             name="secondAirlineDestination"
@@ -568,20 +586,20 @@ const TwoWayTicket = () => {
                             className="w-full text-center bg-transparent"
                           />
                         </td>
-                        <td className="border  w-[6.2rem] border-cyan-500 py-2 whitespace-normal">
+                        <td className="border  w-[6rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
                             name="secondAirlineDate"
-                            value={flight.date?.[2] || "Unknown Date"}
+                            value={flight.date?.[2] || "12-3-2025"}
                             onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
                         </td>
-                        <td className="border border-cyan-500 py-2 whitespace-normal">
+                        <td className="border w-[6rem] border-cyan-500 py-2 whitespace-normal">
                           <input
                             type="text"
                             name="secondAirlineTime"
-                            value={flight.time?.[2] || "Unknown Time"}
+                            value={flight.time?.[2] || "00:00"}
                             onChange={handleFlightChange}
                             className="w-full text-center bg-transparent"
                           />
