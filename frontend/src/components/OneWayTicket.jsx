@@ -46,7 +46,7 @@ const OneWayTicket = ({ extractedData, ticketType }) => {
 
       setFlight({
         airline: extractedData.airlineName || "Mahan Air",
-        flightNum: extractedData.flightNumber || "0",
+        flightNum: extractedData.flightNumber || "071",
         cabin: extractedData.cabin || "Economy",
         stop: extractedData.stops || "0",
         airlinePNR: extractedData.pnr || "0",

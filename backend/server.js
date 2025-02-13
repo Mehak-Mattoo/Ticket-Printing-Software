@@ -145,10 +145,12 @@ function splitIntoTickets(text) {
 
 // Function to extract fields from a single ticket's text
 function OneWayExtractFields(text) {
-  const nameMatch = text.match(
-    /(?:Passenger's Name|Traveler)\s*([A-Z][A-Z\s\h]*)\n/
-  );
-  const name = nameMatch ? nameMatch[1].trim() : null;
+const nameMatch = text.match(
+  /(?:Passenger(?:’|'|′|`)?s Name|Traveller|Traveler)\s*[:\-]?\s*([A-Z][A-Z\s]*)/
+);
+const name = nameMatch ? nameMatch[1].trim() : null;
+
+
 
   // Passport Number
   const passportMatch = text.match(/Passport Number\s+([A-Z0-9]+)/);
@@ -163,9 +165,11 @@ function OneWayExtractFields(text) {
   const airlineMatches = text.match(/Airline\s*:\s*([^\n]+)/);
   const airlineName = airlineMatches ? airlineMatches[1].trim() : null;
 
-  // Flight Number
-  const flightNumberMatch = text.match(/Flight (?:Number|No):\s+(\w+\d+)/);
-  const flightNumber = flightNumberMatch ? flightNumberMatch[1] : null;
+const flightNumberMatch = text.match(
+  /(?:Flight (?:Number|No)|Aircraft Type)\s*:\s*(\w+\d+)/
+);
+const flightNumber = flightNumberMatch ? flightNumberMatch[1] : null;
+
 
   // Cabin
   const cabinMatch = text.match(/Cabin Class:\s+([A-Za-z]+)/);
